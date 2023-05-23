@@ -1,6 +1,8 @@
 from dash import html
 from dash import Dash
 
+from components import app_components
+
 def main() -> None:
     """..."""
 
@@ -9,7 +11,7 @@ def main() -> None:
     # ==================================================================
 
     app = Dash(__name__)
-    app.layout = html.Div()
+    app.layout = html.Div(children=app_components)
 
     # ==================================================================
     # RUN THE SERVER
