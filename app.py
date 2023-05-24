@@ -11,7 +11,10 @@ def main() -> None:
     # ==================================================================
 
     app = Dash(__name__)
-    app.layout = html.Div(children=app_components)
+    app.layout = html.Div(
+        children=app_components,
+        style={'display': 'flex', 'flex-direction': 'row'}
+    )
 
     # ==================================================================
     # RUN THE SERVER
