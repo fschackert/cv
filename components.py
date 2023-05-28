@@ -1,14 +1,19 @@
 from dash import html
 from dash import dcc
 
-from figure import fig
-
 app_components = [
     html.H1(
-        children='Dr. Florian K. Schackert'
+        children='Dr. Florian K. Schackert',
     ),
     dcc.Graph(
-        figure=fig,
-        style={'padding': 10, 'flex': 1}
+        id='timeline',
+        style={'padding': 10, 'flex': 1},
+    ),
+    dcc.Graph(
+        id='globe',
+        style={'padding': 10, 'flex': 1},
+    ),
+    dcc.Store(
+        id='selected_items',
     ),
 ]
