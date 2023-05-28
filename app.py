@@ -39,8 +39,8 @@ def main() -> None:
             layout={
                 'height': 360,
                 'width': 640,
+                'margin': {"r": 0, "t": 36, "l": 0, "b": 0},
                 'xaxis': {'type': 'date'},
-                'margin': {"r": 0, "t": 36, "l": 0, "b": 0}
             },
         )
         timeline.add_trace(
@@ -55,6 +55,7 @@ def main() -> None:
         )
         timeline['data'][0]['marker']['opacity'] = [1.0 if i in selected_items else 0.5 for i in df.index]
         return timeline
+
     @app.callback(
         Output('globe', 'figure'),
         Input('selected_items', 'data'))
@@ -68,9 +69,19 @@ def main() -> None:
             color_discrete_map=category_to_color,
             hover_name='location',
             opacity=0.5,
-            #fitbounds='locations',
             size=(scope['end'] - scope['start']).astype(int),
         )
+        globe.update_geos(
+            projection_type='orthographic',
+            fitbounds='locations',
+            showcountries=True,
+        )
+        globe.update_layout(
+            height=360,
+            width=360,
+            margin={"r": 0, "t": 36, "l": 0, "b": 0},
+        )
+
         return globe
 
     # ==================================================================
