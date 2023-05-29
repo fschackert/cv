@@ -52,7 +52,11 @@ def main() -> None:
         timeline = go.Figure(
             layout={
                 'margin': {'r': 0, 't': 0, 'l': 0, 'b': 0},
-                'xaxis': {'type': 'date'},
+                'bargap': 0,
+                'xaxis': {
+                    'type': 'date',
+                    'range': ['2014-05-01', '2023-06-01'],
+                },
                 'plot_bgcolor': 'rgba(0, 0, 0, 0)',
                 'paper_bgcolor': 'rgba(0, 0, 0, 0)',
                 'font': {'size': 18},
@@ -67,6 +71,7 @@ def main() -> None:
                 orientation='h',
                 base=df['start'],
                 marker_color=[category_to_color[category] for category in df['category']],
+                marker_line_width=0,
             )
         )
         if hover_data:
@@ -116,6 +121,11 @@ def main() -> None:
             paper_bgcolor='rgba(0, 0, 0, 0)',
             showlegend=False,
             uirevision=1,
+        )
+        globe.update_traces(
+            marker={
+                'line': {'width': 0},
+            }
         )
         for i, point in enumerate(globe['data']):
             if i in scope.index:
