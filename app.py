@@ -19,7 +19,7 @@ def main() -> None:
 
     app = Dash(
         __name__,
-        external_stylesheets=[dbc.themes.SLATE]
+        external_stylesheets=[dbc.themes.QUARTZ]
     )
     app.layout = html.Div(
         children=app_components,
@@ -51,10 +51,11 @@ def main() -> None:
     def update_timeline(hover_data):
         timeline = go.Figure(
             layout={
-                'height': 360,
-                'width': 640,
-                'margin': {"r": 0, "t": 36, "l": 0, "b": 0},
+                'margin': {'r': 0, 't': 0, 'l': 0, 'b': 0},
                 'xaxis': {'type': 'date'},
+                'plot_bgcolor': 'rgba(0, 0, 0, 0)',
+                'paper_bgcolor': 'rgba(0, 0, 0, 0)',
+                'font': {'size': 18}
             },
         )
         timeline.add_trace(
@@ -94,14 +95,19 @@ def main() -> None:
             size=(df['end'] - df['start']).astype(int),
         )
         globe.update_geos(
-            projection_type='orthographic',
-            fitbounds='locations',
+            projection_type='mercator',
+            # fitbounds='locations',
+            showcoastlines=False,
+            resolution=50,
+            scope='europe',
             showcountries=True,
+            showframe=False,
+            bgcolor='rgba(0, 0, 0, 0)'
         )
         globe.update_layout(
-            height=360,
-            width=360,
-            margin={"r": 0, "t": 36, "l": 0, "b": 0},
+            margin={'r': 0, 't': 0, 'l': 0, 'b': 0},
+            plot_bgcolor='rgba(0, 0, 0, 0)',
+            paper_bgcolor='rgba(0, 0, 0, 0)',
             showlegend=False
         )
         for i, point in enumerate(globe['data']):
