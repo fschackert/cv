@@ -55,7 +55,8 @@ def main() -> None:
                 'xaxis': {'type': 'date'},
                 'plot_bgcolor': 'rgba(0, 0, 0, 0)',
                 'paper_bgcolor': 'rgba(0, 0, 0, 0)',
-                'font': {'size': 18}
+                'font': {'size': 18},
+                'modebar': {'orientation': 'v'},
             },
         )
         timeline.add_trace(
@@ -66,14 +67,13 @@ def main() -> None:
                 orientation='h',
                 base=df['start'],
                 marker_color=[category_to_color[category] for category in df['category']],
-                opacity=0.8,
             )
         )
         if hover_data:
             hover_number = hover_data['points'][0]['pointNumber']
-            timeline['data'][0]['marker']['opacity'] = [1.0 if i == hover_number else 0.5 for i in df.index]
+            timeline['data'][0]['marker']['opacity'] = [1.0 if i == hover_number else 0.6 for i in df.index]
         else:
-            timeline['data'][0]['marker']['opacity'] = [0.5 for _ in df.index]
+            timeline['data'][0]['marker']['opacity'] = [0.6 for _ in df.index]
         return timeline
 
     @app.callback(
@@ -91,28 +91,35 @@ def main() -> None:
             color='title',
             color_discrete_sequence=[category_to_color[category] for category in df['category']],
             hover_name='location',
-            opacity=0.4,
+            opacity=0.6,
             size=(df['end'] - df['start']).astype(int),
         )
         globe.update_geos(
             projection_type='mercator',
+            center={'lat': 50.9413, 'lon': 6.9583},
+            lataxis_range=[40, 65],
+            lonaxis_range=[-10, 40],
             # fitbounds='locations',
             showcoastlines=False,
             resolution=50,
             scope='europe',
             showcountries=True,
             showframe=False,
-            bgcolor='rgba(0, 0, 0, 0)'
+            countrycolor='rgba(33, 37, 41, 1)',
+            landcolor='rgba(0, 0, 0, 0.05)',
+            lakecolor='rgba(0, 0, 0, 0)',
+            bgcolor='rgba(0, 0, 0, 0)',
         )
         globe.update_layout(
             margin={'r': 0, 't': 0, 'l': 0, 'b': 0},
             plot_bgcolor='rgba(0, 0, 0, 0)',
             paper_bgcolor='rgba(0, 0, 0, 0)',
-            showlegend=False
+            showlegend=False,
+            uirevision=1,
         )
         for i, point in enumerate(globe['data']):
             if i in scope.index:
-                point['marker']['opacity'] = 0.8
+                point['marker']['opacity'] = 1.0
         return globe
 
     # ==================================================================
