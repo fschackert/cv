@@ -1,9 +1,11 @@
 title,description,category,location,lat,lon,start,end
-Higher Education Entrance Qualification, ,SCHOOL,Krumbach,48.2403,10.3751,2012-09-13,2014-06-27
-B.Sc. Physics, ,PHYSICS,Karlsruhe,49.0069,8.4037,2014-10-01,2017-10-20
-M.Sc. Physics, ,PHYSICS,Dresden,51.0504, 13.7373,2017-10-01,2019-09-25
-Master Thesis, ,PHYSICS,Parma,44.8044,10.3325,2018-10-15,2019-09-18
-PhD, ,PHYSICS,Aachen,50.7753,6.0839,2019-11-11,2023-04-26
-Guitar, ,MUSIC,Cologne,50.9413,6.9583,2022-10-01,2023-02-28
+Higher Education Entrance Qualification, ,EDUCATION,Krumbach,48.2403,10.3751,2012-09-13,2014-06-27
+B.Sc. Physics, ,EDUCATION,Karlsruhe,49.0069,8.4037,2014-10-01,2017-10-20
+M.Sc. Physics, ,EDUCATION,Dresden,51.0504,13.7373,2017-10-01,2019-09-25
+PhD, ,EDUCATION,Aachen,50.7753,6.0839,2019-11-11,2023-04-26
+Master Thesis, ,EDUCATION,Parma,44.8044,10.3325,2018-10-15,2019-09-18
 Student Assistant, ,WORK,Karlsruhe,49.0069,8.4037,2014-12-01,2017-03-01
+Student Assistant 2, ,WORK,Dresden,51.0504,13.7373,2018-01-01,2018-09-30
 Doctoral Researcher, ,WORK,Juelich,50.9224,6.3639,2019-11-11,2022-09-30
+Executive Assistant, ,WORK,Juelich,50.9224,6.3639,2023-03-01,today
+Guitar, ,MUSIC,Cologne,50.9413,6.9583,2022-10-01,2023-02-28
