@@ -23,7 +23,6 @@ def main() -> None:
     )
     app.layout = html.Div(
         children=app_components,
-        #style={'display': 'flex', 'flex-direction': 'row'},
     )
 
     df = pd.read_csv(
@@ -56,6 +55,14 @@ def main() -> None:
                 'xaxis': {
                     'type': 'date',
                     'range': ['2014-05-01', '2023-06-01'],
+                    'color': 'rgba(33, 37, 41, 1)',
+                    'gridcolor': 'rgba(33, 37, 41, 1)',
+                    'anchor': 'free',
+                    'position': 0.0,
+                },
+                'yaxis': {
+                    'visible': False,
+                    'showticklabels': False,
                 },
                 'plot_bgcolor': 'rgba(0, 0, 0, 0)',
                 'paper_bgcolor': 'rgba(0, 0, 0, 0)',
