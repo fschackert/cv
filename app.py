@@ -11,7 +11,6 @@ from utils import category_to_color
 
 
 def main() -> None:
-    """..."""
 
     # ==================================================================
     # GLOBAL THINGIES
@@ -59,17 +58,16 @@ def main() -> None:
                     'gridcolor': 'rgba(33, 37, 41, 1)',
                     'anchor': 'free',
                     'position': 0.0,
-                    'tickfont': {
-                        'size': 20,
-                        # 'color': [category_to_color[category] for category in df['category'].unique()],
-                    },
                 },
                 'yaxis': {
                     'visible': False,
                 },
                 'plot_bgcolor': 'rgba(0, 0, 0, 0)',
                 'paper_bgcolor': 'rgba(0, 0, 0, 0)',
-                'modebar': {'orientation': 'v'},
+                'font': {
+                    'size': 20,
+                },
+                'uirevision': 'static',
             },
         )
         for category in df['category'].unique():
@@ -87,36 +85,47 @@ def main() -> None:
                 )
             )
         if hover_data:
-            hover_number = hover_data['points'][0]['pointNumber']
-            timeline['data'][0]['marker']['opacity'] = [1.0 if i == hover_number else 0.6 for i in df.index]
+            curve_number = hover_data['points'][0]['curveNumber']
+            point_number = hover_data['points'][0]['pointNumber']
+            for i in range(len(timeline['data'])):
+                timeline['data'][i]['marker']['opacity'] = [
+                    1.0 if i == curve_number and j == point_number else 0.6
+                    for j in range(len(timeline['data'][i]['x']))
+                ]
         else:
-            timeline['data'][0]['marker']['opacity'] = [0.6 for _ in df.index]
+            timeline.update_traces(opacity=0.6)
         return timeline
 
     @app.callback(
         Output('globe', 'figure'),
         Input('timeline', 'hoverData'),
-        Input('timeline', 'selectedData'))
-    def update_globe(
-            hover_data,
-            selected_data):
-        scope = df.iloc[_get_highlighted_locations(hover_data, selected_data)]
+        Input('timeline', 'figure'),
+        Input('timeline', 'restyleData'))
+    def update_globe(hover_data, figure, _):
+        toggled_off_categories = []
+        for figure_data in figure['data']:
+            try:
+                if figure_data['visible'] == 'legendonly':
+                    toggled_off_categories.append(figure_data['name'])
+            except KeyError:
+                pass
+        # What when all are toggled off?
+        toggled_on = df[~df['category'].isin(toggled_off_categories)]
         globe = px.scatter_geo(
-            data_frame=df,
+            data_frame=toggled_on,
             lat='lat',
             lon='lon',
             color='title',
-            color_discrete_sequence=[category_to_color[category] for category in df['category']],
+            color_discrete_sequence=[category_to_color[category] for category in toggled_on['category']],
             hover_name='location',
             opacity=0.6,
-            size=(df['end'] - df['start']).astype(int),
+            size=(toggled_on['end'] - toggled_on['start']).astype(int),
         )
         globe.update_geos(
             projection_type='mercator',
             center={'lat': 50.9413, 'lon': 6.9583},
             lataxis_range=[40, 65],
             lonaxis_range=[-10, 40],
-            # fitbounds='locations',
             showcoastlines=False,
             resolution=50,
             scope='europe',
@@ -132,16 +141,18 @@ def main() -> None:
             plot_bgcolor='rgba(0, 0, 0, 0)',
             paper_bgcolor='rgba(0, 0, 0, 0)',
             showlegend=False,
-            uirevision=1,
+            uirevision='static',
         )
         globe.update_traces(
             marker={
                 'line': {'width': 0},
             }
         )
-        for i, point in enumerate(globe['data']):
-            if i in scope.index:
-                point['marker']['opacity'] = 1.0
+        if hover_data is not None:
+            scope = df[df['title'] == hover_data['points'][0]['label']]
+            for i, point in enumerate(globe['data']):
+                if i == scope.index:
+                    point['marker']['opacity'] = 1.0
         return globe
 
     # ==================================================================

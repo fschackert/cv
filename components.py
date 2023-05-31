@@ -31,6 +31,9 @@ app_components = [
                     card_wrapper(dcc.Graph(
                         id='timeline',
                         clear_on_unhover=True,
+                        config={
+                            'displayModeBar': False
+                        }
                     ))
                 ], width=8),
                 dbc.Col([
