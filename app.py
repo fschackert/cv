@@ -48,8 +48,6 @@ def main() -> None:
         Output('timeline', 'figure'),
         Input('timeline', 'hoverData'))
     def update_timeline(hover_data):
-        sorted_value_counts = df.value_counts('category')[df['category'].unique()]
-        y_tickvals = sorted_value_counts.cumsum() - sorted_value_counts + (sorted_value_counts-1)/2
         timeline = go.Figure(
             layout={
                 'margin': {'r': 60, 't': 0, 'l': 0, 'b': 0},
@@ -67,13 +65,7 @@ def main() -> None:
                     },
                 },
                 'yaxis': {
-                    'visible': True,
-                    'showticklabels': True,
-                    'tickmode': 'array',
-                    'tickvals': y_tickvals,
-                    'ticktext': df['category'].unique(),
-                    'tickangle': -90,
-                    'tickfont': {'size': 20}
+                    'visible': False,
                 },
                 'plot_bgcolor': 'rgba(0, 0, 0, 0)',
                 'paper_bgcolor': 'rgba(0, 0, 0, 0)',
