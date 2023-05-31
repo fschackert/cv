@@ -48,10 +48,12 @@ def main() -> None:
         Output('timeline', 'figure'),
         Input('timeline', 'hoverData'))
     def update_timeline(hover_data):
+        sorted_value_counts = df.value_counts('category')[df['category'].unique()]
+        y_tickvals = sorted_value_counts.cumsum() - sorted_value_counts + (sorted_value_counts-1)/2
         timeline = go.Figure(
             layout={
-                'margin': {'r': 0, 't': 0, 'l': 0, 'b': 0},
-                'bargap': 0,
+                'margin': {'r': 60, 't': 0, 'l': 0, 'b': 0},
+                'bargap': 0.1,
                 'xaxis': {
                     'type': 'date',
                     'range': ['2014-05-01', '2023-06-01'],
@@ -59,28 +61,39 @@ def main() -> None:
                     'gridcolor': 'rgba(33, 37, 41, 1)',
                     'anchor': 'free',
                     'position': 0.0,
+                    'tickfont': {
+                        'size': 20,
+                        # 'color': [category_to_color[category] for category in df['category'].unique()],
+                    },
                 },
                 'yaxis': {
-                    'visible': False,
-                    'showticklabels': False,
+                    'visible': True,
+                    'showticklabels': True,
+                    'tickmode': 'array',
+                    'tickvals': y_tickvals,
+                    'ticktext': df['category'].unique(),
+                    'tickangle': -90,
+                    'tickfont': {'size': 20}
                 },
                 'plot_bgcolor': 'rgba(0, 0, 0, 0)',
                 'paper_bgcolor': 'rgba(0, 0, 0, 0)',
-                'font': {'size': 18},
                 'modebar': {'orientation': 'v'},
             },
         )
-        timeline.add_trace(
-            go.Bar(
-                # dash does not seem to like timedelta, maybe related to github.com/plotly/dash/issues/1808
-                x=(df['end'] - df['start']).dt.days*24*60*60*1000,
-                y=df['title'],
-                orientation='h',
-                base=df['start'],
-                marker_color=[category_to_color[category] for category in df['category']],
-                marker_line_width=0,
+        for category in df['category'].unique():
+            category_df = df[df['category'] == category]
+            timeline.add_trace(
+                go.Bar(
+                    # dash does not seem to like timedelta, maybe related to github.com/plotly/dash/issues/1808
+                    x=(category_df['end'] - category_df['start']).dt.days*24*60*60*1000,
+                    y=category_df['title'],
+                    orientation='h',
+                    base=category_df['start'],
+                    marker_color=category_to_color[category],
+                    marker_line_width=0,
+                    name=category,
+                )
             )
-        )
         if hover_data:
             hover_number = hover_data['points'][0]['pointNumber']
             timeline['data'][0]['marker']['opacity'] = [1.0 if i == hover_number else 0.6 for i in df.index]
