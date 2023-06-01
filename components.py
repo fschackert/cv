@@ -45,7 +45,13 @@ app_components = [
             html.Br(),
             dbc.Row([
                 dbc.Col([
-                    " "
+                    card_wrapper(dcc.Graph(
+                        id='skills',
+                        clear_on_unhover=True,
+                        config={
+                            'displayModeBar': False
+                        }
+                    ))
                 ], width=4),
                 dbc.Col([
                     " "
