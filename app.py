@@ -28,6 +28,9 @@ def main() -> None:
         filepath_or_buffer='data.csv',
         parse_dates=['start', 'end'],
     )
+    skill_df = pd.read_csv(
+        filepath_or_buffer='skills.csv',
+    )
 
     def _get_highlighted_locations(
             hover_data,
@@ -61,6 +64,13 @@ def main() -> None:
                 },
                 'yaxis': {
                     'visible': False,
+                },
+                'legend': {
+                    'yanchor': 'bottom',
+                    'y': 1.05,
+                    'xanchor': 'left',
+                    'x': 0.0,
+                    'orientation': 'h',
                 },
                 'plot_bgcolor': 'rgba(0, 0, 0, 0)',
                 'paper_bgcolor': 'rgba(0, 0, 0, 0)',
@@ -109,8 +119,14 @@ def main() -> None:
                     toggled_off_categories.append(figure_data['name'])
             except KeyError:
                 pass
-        # What when all are toggled off?
         toggled_on = df[~df['category'].isin(toggled_off_categories)]
+        if toggled_on.empty:
+            toggled_on = df
+            opacity = 0.0
+            hovermode = False
+        else:
+            opacity = 0.6
+            hovermode = 'closest'
         globe = px.scatter_geo(
             data_frame=toggled_on,
             lat='lat',
@@ -118,7 +134,7 @@ def main() -> None:
             color='title',
             color_discrete_sequence=[category_to_color[category] for category in toggled_on['category']],
             hover_name='location',
-            opacity=0.6,
+            opacity=opacity,
             size=(toggled_on['end'] - toggled_on['start']).astype(int),
         )
         globe.update_geos(
@@ -142,11 +158,12 @@ def main() -> None:
             paper_bgcolor='rgba(0, 0, 0, 0)',
             showlegend=False,
             uirevision='static',
+            hovermode=hovermode,
         )
         globe.update_traces(
             marker={
                 'line': {'width': 0},
-            }
+            },
         )
         if hover_data is not None:
             scope = df[df['title'] == hover_data['points'][0]['label']]
@@ -154,6 +171,41 @@ def main() -> None:
                 if i == scope.index:
                     point['marker']['opacity'] = 1.0
         return globe
+
+    @app.callback(
+        Output('skills', 'figure'),
+        Input('skills', 'figure'))
+    def update_skills(_):
+        max_level = 5
+        skills = go.Figure(
+            layout={
+                'margin': {'r': 0, 't': 0, 'l': 0, 'b': 0},
+                'plot_bgcolor': 'rgba(0, 0, 0, 0)',
+                'paper_bgcolor': 'rgba(0, 0, 0, 0)',
+                'font': {
+                    'size': 20,
+                },
+                'uirevision': 'static',
+            },
+        )
+        skills.add_trace(
+            go.Scatterpolar(
+                r=skill_df['level'],
+                theta=skill_df['skill'],
+                fill='toself',
+                fillcolor='rgba(0, 0, 0, 0.05)',
+                )
+            )
+        skills.update_layout(
+            polar=dict(
+                    radialaxis=dict(
+                        visible=True,
+                        range=[0, 5],
+                        showticklabels=False
+                )),
+                showlegend=False
+        )
+        return skills
 
     # ==================================================================
     # RUN THE SERVER
