@@ -1,6 +1,13 @@
-skill,level
-python,4
-git,3
-bash,3
-java,2
-c++,1
+skill,level,category
+C++,1,PROGRAMMING
+Java,2,PROGRAMMING
+Bash,3,PROGRAMMING
+Python,4,PROGRAMMING
+French,1,LANGUAGES
+Italian,2,LANGUAGES
+English,4,LANGUAGES
+German,5,LANGUAGES
+Guitar,3,OTHER SKILLS
+Git,3,OTHER SKILLS
+Adobe CC,3,OTHER SKILLS
+LaTex,4,OTHER SKILLS

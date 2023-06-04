@@ -7,7 +7,7 @@ from dash import html
 from dash.dependencies import Input, Output, State
 
 from components import app_components
-from utils import category_to_color
+from utils import CATEGORY_COLORS, LINECOLOR, plot_skills
 
 
 def main() -> None:
@@ -32,16 +32,6 @@ def main() -> None:
         filepath_or_buffer='skills.csv',
     )
 
-    def _get_highlighted_locations(
-            hover_data,
-            selected_data):
-        selected_items = []
-        if hover_data:
-            selected_items += [hover_data['points'][0]['pointNumber']]
-        if selected_data:
-            selected_items += [point['pointNumber'] for point in selected_data['points']]
-        return selected_items
-
     # ==================================================================
     # FIGURE CALLBACKS
     # ==================================================================
@@ -52,18 +42,17 @@ def main() -> None:
     def update_timeline(hover_data):
         timeline = go.Figure(
             layout={
-                'margin': {'r': 60, 't': 0, 'l': 0, 'b': 0},
+                'margin': {'r': 0, 't': 0, 'l': 0, 'b': 0},
                 'bargap': 0.1,
                 'xaxis': {
                     'type': 'date',
                     'range': ['2014-05-01', '2023-06-01'],
-                    'color': 'rgba(33, 37, 41, 1)',
-                    'gridcolor': 'rgba(33, 37, 41, 1)',
-                    'anchor': 'free',
-                    'position': 0.0,
+                    'color': LINECOLOR,
+                    'gridcolor': LINECOLOR,
                 },
                 'yaxis': {
                     'visible': False,
+                    'fixedrange': True,
                 },
                 'legend': {
                     'yanchor': 'bottom',
@@ -74,9 +63,7 @@ def main() -> None:
                 },
                 'plot_bgcolor': 'rgba(0, 0, 0, 0)',
                 'paper_bgcolor': 'rgba(0, 0, 0, 0)',
-                'font': {
-                    'size': 20,
-                },
+                'font': {'size': 20},
                 'uirevision': 'static',
             },
         )
@@ -89,7 +76,7 @@ def main() -> None:
                     y=category_df['title'],
                     orientation='h',
                     base=category_df['start'],
-                    marker_color=category_to_color[category],
+                    marker_color=CATEGORY_COLORS[category],
                     marker_line_width=0,
                     name=category,
                 )
@@ -103,7 +90,11 @@ def main() -> None:
                     for j in range(len(timeline['data'][i]['x']))
                 ]
         else:
-            timeline.update_traces(opacity=0.6)
+            # timeline.update_traces(opacity=0.6) also changes the label colors
+            for i in range(len(timeline['data'])):
+                timeline['data'][i]['marker']['opacity'] = [
+                    0.6 for _ in range(len(timeline['data'][i]['x']))
+                ]
         return timeline
 
     @app.callback(
@@ -132,7 +123,7 @@ def main() -> None:
             lat='lat',
             lon='lon',
             color='title',
-            color_discrete_sequence=[category_to_color[category] for category in toggled_on['category']],
+            color_discrete_sequence=[CATEGORY_COLORS[category] for category in toggled_on['category']],
             hover_name='location',
             opacity=opacity,
             size=(toggled_on['end'] - toggled_on['start']).astype(int),
@@ -147,7 +138,7 @@ def main() -> None:
             scope='europe',
             showcountries=True,
             showframe=False,
-            countrycolor='rgba(33, 37, 41, 1)',
+            countrycolor=LINECOLOR,
             landcolor='rgba(0, 0, 0, 0.05)',
             lakecolor='rgba(0, 0, 0, 0)',
             bgcolor='rgba(0, 0, 0, 0)',
@@ -173,39 +164,22 @@ def main() -> None:
         return globe
 
     @app.callback(
-        Output('skills', 'figure'),
-        Input('skills', 'figure'))
+        Output('programmingSkills', 'figure'),
+        Input('programmingSkills', 'figure'))
     def update_skills(_):
-        max_level = 5
-        skills = go.Figure(
-            layout={
-                'margin': {'r': 0, 't': 0, 'l': 0, 'b': 0},
-                'plot_bgcolor': 'rgba(0, 0, 0, 0)',
-                'paper_bgcolor': 'rgba(0, 0, 0, 0)',
-                'font': {
-                    'size': 20,
-                },
-                'uirevision': 'static',
-            },
-        )
-        skills.add_trace(
-            go.Scatterpolar(
-                r=skill_df['level'],
-                theta=skill_df['skill'],
-                fill='toself',
-                fillcolor='rgba(0, 0, 0, 0.05)',
-                )
-            )
-        skills.update_layout(
-            polar=dict(
-                    radialaxis=dict(
-                        visible=True,
-                        range=[0, 5],
-                        showticklabels=False
-                )),
-                showlegend=False
-        )
-        return skills
+        return plot_skills(skill_df, 'PROGRAMMING')
+
+    @app.callback(
+        Output('languageSkills', 'figure'),
+        Input('languageSkills', 'figure'))
+    def update_skills(_):
+        return plot_skills(skill_df, 'LANGUAGES')
+
+    @app.callback(
+        Output('otherSkills', 'figure'),
+        Input('otherSkills', 'figure'))
+    def update_skills(_):
+        return plot_skills(skill_df, 'OTHER SKILLS')
 
     # ==================================================================
     # RUN THE SERVER

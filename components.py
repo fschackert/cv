@@ -20,44 +20,74 @@ app_components = [
         dbc.CardBody([
             dbc.Row([
                 dbc.Col([
-                    card_wrapper(html.H1(
-                        children='Dr. Florian K. Schackert',
-                    ))
-                ], width=12),
+                    dbc.Card(
+                        dbc.CardBody([
+                            html.H1(
+                                children='Florian Schackert',
+                            )
+                        ], style={'height': '110px'})
+                    )
+                ], width=12)
             ]),
             html.Br(),
             dbc.Row([
                 dbc.Col([
-                    card_wrapper(dcc.Graph(
-                        id='timeline',
-                        clear_on_unhover=True,
-                        config={
-                            'displayModeBar': False
-                        }
-                    ))
+                    dbc.Card(
+                        dbc.CardBody([
+                            dcc.Graph(
+                                id='timeline',
+                                clear_on_unhover=True,
+                                config={'displayModeBar': False},
+                                style={'height': '100%', 'width': '100%'},
+                            )
+                        ], style={'height': '480px'})
+                    )
                 ], width=8),
                 dbc.Col([
-                    card_wrapper(dcc.Graph(
-                        id='globe',
-                    ))
+                    dbc.Card(
+                        dbc.CardBody([
+                            dcc.Graph(
+                                id='globe',
+                                style={'height': '100%', 'width': '100%'},
+                            )
+                        ], style={'height': '480px'})
+                    )
                 ], width=4),
             ]),
             html.Br(),
             dbc.Row([
                 dbc.Col([
-                    card_wrapper(dcc.Graph(
-                        id='skills',
-                        clear_on_unhover=True,
-                        config={
-                            'displayModeBar': False
-                        }
-                    ))
+                    dbc.Card(
+                        dbc.CardBody([
+                            dcc.Graph(
+                                id='programmingSkills',
+                                config={'displayModeBar': False},
+                                style={'height': '100%', 'width': '100%'},
+                            )
+                        ], style={'height': '280px'})
+                    )
                 ], width=4),
                 dbc.Col([
-                    " "
+                    dbc.Card(
+                        dbc.CardBody([
+                            dcc.Graph(
+                                id='languageSkills',
+                                config={'displayModeBar': False},
+                                style={'height': '100%', 'width': '100%'},
+                            )
+                        ], style={'height': '280px'})
+                    )
                 ], width=4),
                 dbc.Col([
-                    " "
+                    dbc.Card(
+                        dbc.CardBody([
+                            dcc.Graph(
+                                id='otherSkills',
+                                config={'displayModeBar': False},
+                                style={'height': '100%', 'width': '100%'},
+                            )
+                        ], style={'height': '280px'})
+                    )
                 ], width=4),
             ], align='center'),
         ])
