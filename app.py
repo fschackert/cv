@@ -165,21 +165,9 @@ def main() -> None:
 
     @app.callback(
         Output('programmingSkills', 'figure'),
-        Input('programmingSkills', 'figure'))
-    def update_skills(_):
-        return plot_skills(skill_df, 'PROGRAMMING')
-
-    @app.callback(
-        Output('languageSkills', 'figure'),
-        Input('languageSkills', 'figure'))
-    def update_skills(_):
-        return plot_skills(skill_df, 'LANGUAGES')
-
-    @app.callback(
-        Output('otherSkills', 'figure'),
-        Input('otherSkills', 'figure'))
-    def update_skills(_):
-        return plot_skills(skill_df, 'OTHER SKILLS')
+        Input('categorySelector', 'value'))
+    def update_skills(category):
+        return plot_skills(skill_df, category)
 
     # ==================================================================
     # RUN THE SERVER

@@ -1,8 +1,9 @@
 import plotly.graph_objects as go
 
-CUSTOM_YELLOW = '#E8B84A'
 CUSTOM_BLUE = '#2766E8'
+CUSTOM_GREY = '#212529'
 CUSTOM_RED = '#E83283'
+CUSTOM_YELLOW = '#E8B84A'
 
 LINECOLOR = 'rgba(33, 37, 41, 1)'
 
@@ -12,7 +13,7 @@ CATEGORY_COLORS = {
     'WORK': CUSTOM_RED,
     'PROGRAMMING': CUSTOM_BLUE,
     'LANGUAGES': CUSTOM_RED,
-    'OTHER SKILLS': CUSTOM_YELLOW,
+    'OTHER SKILLS': CUSTOM_GREY,
 }
 
 
@@ -55,7 +56,7 @@ def plot_skills(df, category, max_level=5):
             go.Scatter(
                 x=list(range(max_level)),
                 y=[i] * max_level,
-                mode='markers+lines',
+                mode='markers',
                 opacity=0.3,
                 name=row['skill'],
                 marker_color=CATEGORY_COLORS[category],
@@ -67,7 +68,7 @@ def plot_skills(df, category, max_level=5):
             go.Scatter(
                 x=list(range(row['level'])),
                 y=[i] * row['level'],
-                mode='markers+lines',
+                mode='markers',
                 name=row['skill'],
                 marker_color=CATEGORY_COLORS[category],
                 marker_size=25,
