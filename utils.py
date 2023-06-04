@@ -37,7 +37,7 @@ def plot_skills(df, category, max_level=5):
                 'tickvals': category_df.index.tolist(),
                 'fixedrange': True,
             },
-            'showlegend': True,
+            'showlegend': False,
             'legend': {
                 'yanchor': 'bottom',
                 'y': 1.05,
@@ -75,20 +75,5 @@ def plot_skills(df, category, max_level=5):
                 # line_width=5,
             )
         )
-
-    skills.add_trace(
-        go.Scatter(
-            x=[0],
-            y=[0],
-            mode='markers',
-            name=category,
-            marker_color=CATEGORY_COLORS[category],
-            marker_size=25,
-            marker_line_width=0,
-        )
-    )
-
-    for skill in category_df['skill']:
-        skills.update_traces(showlegend=False, selector={'name': skill})
 
     return skills
