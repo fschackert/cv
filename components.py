@@ -28,10 +28,11 @@ app_components = [
                                 className='w-100',
                             ),
                             html.Br(),
+                            html.Br(),
                             dcc.Graph(
                                 id='skills',
                                 config={'displayModeBar': False},
-                                style={'height': '70%'},
+                                style={'height': '60%'},
                             ),
                             html.Br(),
                             html.Br(),
@@ -80,7 +81,7 @@ app_components = [
                                 config={'displayModeBar': False},
                                 style={'height': '100%', 'width': '100%'},
                             )
-                        ], style={'height': '500px', 'width': '820px'})
+                        ], style={'height': '500px', 'width': '810px'})
                     )
                 ], width='auto'),
                 dbc.Col([
@@ -90,10 +91,10 @@ app_components = [
                                 id='globe',
                                 style={'height': '100%', 'width': '100%'},
                             )
-                        ], style={'height': '500px'})
+                        ], style={'height': '500px', 'width': '580px'})
                     )
-                ]),
-            ]),
+                ], width='auto'),
+            ], justify="between"),
         ])
     )
 ]
