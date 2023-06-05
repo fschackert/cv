@@ -23,35 +23,52 @@ app_components = [
                 dbc.Col([
                     dbc.Card(
                         dbc.CardBody([
-                            dbc.Row([
-                                dbc.Col([
-                                    dbc.Button(
-                                        'PROGRAMMING',
-                                        outline=True,
-                                        color='primary',
-                                    )
-                                ], className='d-grid gap-2'),
-                                dbc.Col([
-                                    dbc.Button(
-                                        'LANGUAGES',
-                                        outline=True,
-                                        color='primary',
-                                    )
-                                ], className='d-grid gap-2'),
-                                dbc.Col([
-                                    dbc.Button(
-                                        'OTHER SKILLS',
-                                        outline=True,
-                                        color='primary',
-                                    )
-                                ], className='d-grid gap-2')
-                            ]),
-                            dcc.Graph(
-                                id='programmingSkills',
-                                config={'displayModeBar': False},
-                                style={'height': '70%', 'width': '100%'},
+                            html.Button(
+                                id='selectedCategory',
+                                className='w-100',
                             ),
-                        ], style={'height': '480px', 'width': '280px'})
+                            html.Br(),
+                            dcc.Graph(
+                                id='skills',
+                                config={'displayModeBar': False},
+                                style={'height': '70%'},
+                            ),
+                            html.Br(),
+                            html.Br(),
+                            dbc.DropdownMenu([
+                                dbc.DropdownMenuItem(
+                                    'PROGRAMMING',
+                                    id='buttonProgramming',
+                                    style={
+                                        'color': CATEGORY_COLORS['PROGRAMMING'],
+                                        'font-size': 20,
+                                    },
+                                ),
+                                dbc.DropdownMenuItem(
+                                    'LANGUAGES',
+                                    id='buttonLanguages',
+                                    style={
+                                        'color': CATEGORY_COLORS['LANGUAGES'],
+                                        'font-size': 20,
+                                    },
+                                ),
+                                dbc.DropdownMenuItem(
+                                    'OTHER SKILLS',
+                                    id='buttonOthers',
+                                    style={
+                                        'color': CATEGORY_COLORS['OTHER SKILLS'],
+                                        'font-size': 20,
+                                    },
+                                )],
+                                label='Select category',
+                                direction='up',
+                                color='light',
+                                style={
+                                    'font-size': 20,
+                                },
+                                className='d-grid',
+                            ),
+                        ], style={'height': '500px', 'width': '340px'})
                     )
                 ], width='auto'),
                 dbc.Col([
@@ -63,7 +80,7 @@ app_components = [
                                 config={'displayModeBar': False},
                                 style={'height': '100%', 'width': '100%'},
                             )
-                        ], style={'height': '480px', 'width': '860px'})
+                        ], style={'height': '500px', 'width': '820px'})
                     )
                 ], width='auto'),
                 dbc.Col([
@@ -73,7 +90,7 @@ app_components = [
                                 id='globe',
                                 style={'height': '100%', 'width': '100%'},
                             )
-                        ], style={'height': '480px'})
+                        ], style={'height': '500px'})
                     )
                 ]),
             ]),

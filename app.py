@@ -2,9 +2,7 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 import dash_bootstrap_components as dbc
-from dash import Dash
-from dash import html
-from dash.dependencies import Input, Output, State
+from dash import Dash, html, Input, Output, ctx
 
 from components import app_components
 from utils import CATEGORY_COLORS, LINECOLOR, plot_skills
@@ -18,8 +16,9 @@ def main() -> None:
 
     app = Dash(
         __name__,
-        external_stylesheets=[dbc.themes.QUARTZ]
+        external_stylesheets=[dbc.themes.QUARTZ],
     )
+
     app.layout = html.Div(
         children=app_components,
     )
@@ -57,8 +56,8 @@ def main() -> None:
                 'legend': {
                     'yanchor': 'bottom',
                     'y': 1.05,
-                    'xanchor': 'left',
-                    'x': 0.0,
+                    'xanchor': 'center',
+                    'x': 0.5,
                     'orientation': 'h',
                 },
                 'plot_bgcolor': 'rgba(0, 0, 0, 0)',
@@ -164,10 +163,46 @@ def main() -> None:
         return globe
 
     @app.callback(
-        Output('programmingSkills', 'figure'),
-        Input('categorySelector', 'value'))
-    def update_skills(category):
+        Output('skills', 'figure'),
+        Input('buttonProgramming', 'n_clicks'),
+        Input('buttonLanguages', 'n_clicks'),
+        Input('buttonOthers', 'n_clicks'))
+    def update_skills(*_):
+        button_categories = {
+            'buttonProgramming': 'PROGRAMMING',
+            'buttonLanguages': 'LANGUAGES',
+            'buttonOthers': 'OTHER SKILLS',
+        }
+        try:
+            category = button_categories[ctx.triggered_id]
+        except KeyError:
+            category = 'PROGRAMMING'
         return plot_skills(skill_df, category)
+
+    @app.callback(
+        Output('selectedCategory', 'children'),
+        Output('selectedCategory', 'style'),
+        Input('buttonProgramming', 'n_clicks'),
+        Input('buttonLanguages', 'n_clicks'),
+        Input('buttonOthers', 'n_clicks'))
+    def update_skills(*_):
+        button_categories = {
+            'buttonProgramming': 'PROGRAMMING',
+            'buttonLanguages': 'LANGUAGES',
+            'buttonOthers': 'OTHER SKILLS',
+        }
+        try:
+            category = button_categories[ctx.triggered_id]
+        except KeyError:
+            category = 'PROGRAMMING'
+        style = {
+            'background-color': 'rgba(0, 0, 0, 0)',
+            'border-color': 'rgba(0, 0, 0, 0)',
+            'color': CATEGORY_COLORS[category],
+            'font-size': 20,
+            'text-align': 'center',
+        }
+        return category, style
 
     # ==================================================================
     # RUN THE SERVER
