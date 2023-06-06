@@ -11,90 +11,110 @@ app_components = [
                 dbc.Col([
                     dbc.Card(
                         dbc.CardBody([
-                            html.H1(
-                                children='Florian Schackert',
-                            )
-                        ], style={'height': '120px'})
+                            html.H1("Dr. Florian K. Schackert"),
+                        ], style={"height": "20vh", "width": "75vw"})
                     )
-                ], width=12)
-            ]),
+                ], width="auto"),
+                dbc.Col([
+                    dbc.Card(
+                        dbc.CardBody([
+                            html.H4(
+                                style={"margin-right": "10px"},
+                                className="fa-solid fa-star-of-life",
+                            ),
+                            html.H2(
+                                "1996",
+                                style={"display": "inline"}
+                            ),
+                            html.Br(),
+                            html.H4(
+                                style={"margin-right": "20px"},
+                                className="fa-solid fa-location-dot",
+                            ),
+                            html.H2(
+                                "Ulm",
+                                style={"display": "inline"}
+                            ),
+                        ], style={"height": "20vh", "width": "20vw"})
+                    )
+                ], width="auto"),
+            ], justify="left"),
             html.Br(),
             dbc.Row([
                 dbc.Col([
                     dbc.Card(
                         dbc.CardBody([
                             html.Button(
-                                id='selectedCategory',
-                                className='w-100',
+                                id="selectedCategory",
+                                className="w-100",
                             ),
                             html.Br(),
                             html.Br(),
                             dcc.Graph(
-                                id='skills',
-                                config={'displayModeBar': False},
-                                style={'height': '60%'},
+                                id="skills",
+                                config={"displayModeBar": False},
+                                style={"height": "60%"},
                             ),
-                            html.Br(),
                             html.Br(),
                             dbc.DropdownMenu([
                                 dbc.DropdownMenuItem(
-                                    'PROGRAMMING',
-                                    id='buttonProgramming',
+                                    "PROGRAMMING",
+                                    id="buttonProgramming",
                                     style={
-                                        'color': CATEGORY_COLORS['PROGRAMMING'],
-                                        'font-size': 20,
+                                        "color": CATEGORY_COLORS["PROGRAMMING"],
+                                        "font-size": 20,
                                     },
                                 ),
                                 dbc.DropdownMenuItem(
-                                    'LANGUAGES',
-                                    id='buttonLanguages',
+                                    "LANGUAGES",
+                                    id="buttonLanguages",
                                     style={
-                                        'color': CATEGORY_COLORS['LANGUAGES'],
-                                        'font-size': 20,
+                                        "color": CATEGORY_COLORS["LANGUAGES"],
+                                        "font-size": 20,
                                     },
                                 ),
                                 dbc.DropdownMenuItem(
-                                    'OTHER SKILLS',
-                                    id='buttonOthers',
+                                    "OTHER SKILLS",
+                                    id="buttonOthers",
                                     style={
-                                        'color': CATEGORY_COLORS['OTHER SKILLS'],
-                                        'font-size': 20,
+                                        "color": CATEGORY_COLORS["OTHER SKILLS"],
+                                        "font-size": 20,
                                     },
                                 )],
-                                label='Select category',
-                                direction='up',
-                                color='light',
+                                label="Select category",
+                                direction="up",
+                                color="light",
                                 style={
-                                    'font-size': 20,
+                                    "font-size": 20,
                                 },
-                                className='d-grid',
+                                className="d-grid",
                             ),
-                        ], style={'height': '500px', 'width': '340px'})
+                        ], style={"height": "60vh", "width": "20vw"})
                     )
-                ], width='auto'),
+                ], width="auto"),
                 dbc.Col([
                     dbc.Card(
                         dbc.CardBody([
                             dcc.Graph(
-                                id='timeline',
+                                id="timeline",
                                 clear_on_unhover=True,
-                                config={'displayModeBar': False},
-                                style={'height': '100%', 'width': '100%'},
+                                config={"displayModeBar": False},
+                                style={"height": "100%", "width": "100%"},
                             )
-                        ], style={'height': '500px', 'width': '810px'})
+                        ], style={"height": "60vh", "width": "40vw"})
                     )
-                ], width='auto'),
+                ], width="auto"),
                 dbc.Col([
                     dbc.Card(
                         dbc.CardBody([
                             dcc.Graph(
-                                id='globe',
-                                style={'height': '100%', 'width': '100%'},
+                                id="globe",
+                                style={"height": "100%", "width": "100%"},
                             )
-                        ], style={'height': '500px', 'width': '580px'})
+                        ], style={"height": "60vh", "width": "32vw"})
                     )
-                ], width='auto'),
-            ], justify="between"),
+                ], width="auto"),
+            ], justify="left"),
         ])
     )
 ]
