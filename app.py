@@ -156,9 +156,9 @@ def main() -> None:
             },
         )
         if hover_data is not None:
-            scope = df[df['title'] == hover_data['points'][0]['label']]
-            for i, point in enumerate(globe['data']):
-                if i == scope.index:
+            hovered_on = toggled_on[toggled_on['title'] == hover_data['points'][0]['label']]['title'].to_string(index=False)
+            for point in globe['data']:
+                if point['legendgroup'] == hovered_on:
                     point['marker']['opacity'] = 1.0
         return globe
 
