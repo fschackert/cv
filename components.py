@@ -12,13 +12,13 @@ app_components = [
                     dbc.Card(
                         dbc.CardBody([
                             html.H1("Dr. Florian K. Schackert"),
-                        ], style={"height": "20vh", "width": "75vw"})
+                        ], style={"height": "20vh", "width": "100%"})
                     )
-                ], width="auto"),
+                ], width=10),
                 dbc.Col([
                     dbc.Card(
                         dbc.CardBody([
-                            html.H4(
+                            html.H3(
                                 style={"margin-right": "10px"},
                                 className="fa-solid fa-star-of-life",
                             ),
@@ -27,7 +27,7 @@ app_components = [
                                 style={"display": "inline"}
                             ),
                             html.Br(),
-                            html.H4(
+                            html.H3(
                                 style={"margin-right": "20px"},
                                 className="fa-solid fa-location-dot",
                             ),
@@ -35,10 +35,10 @@ app_components = [
                                 "Ulm",
                                 style={"display": "inline"}
                             ),
-                        ], style={"height": "20vh", "width": "20vw"})
+                        ], style={"height": "20vh", "width": "100%"})
                     )
-                ], width="auto"),
-            ], justify="left"),
+                ], width=2),
+            ]),
             html.Br(),
             dbc.Row([
                 dbc.Col([
@@ -47,8 +47,8 @@ app_components = [
                             html.Button(
                                 id="selectedCategory",
                                 className="w-100",
+                                style={"font-size": 20},
                             ),
-                            html.Br(),
                             html.Br(),
                             dcc.Graph(
                                 id="skills",
@@ -62,7 +62,6 @@ app_components = [
                                     id="buttonProgramming",
                                     style={
                                         "color": CATEGORY_COLORS["PROGRAMMING"],
-                                        "font-size": 20,
                                     },
                                 ),
                                 dbc.DropdownMenuItem(
@@ -70,7 +69,6 @@ app_components = [
                                     id="buttonLanguages",
                                     style={
                                         "color": CATEGORY_COLORS["LANGUAGES"],
-                                        "font-size": 20,
                                     },
                                 ),
                                 dbc.DropdownMenuItem(
@@ -78,20 +76,16 @@ app_components = [
                                     id="buttonOthers",
                                     style={
                                         "color": CATEGORY_COLORS["OTHER SKILLS"],
-                                        "font-size": 20,
                                     },
                                 )],
                                 label="Select category",
-                                direction="up",
                                 color="light",
-                                style={
-                                    "font-size": 20,
-                                },
+                                style={"height": "20%"},
                                 className="d-grid",
                             ),
-                        ], style={"height": "60vh", "width": "20vw"})
+                        ], style={"height": "60vh", "width": "100%"})
                     )
-                ], width="auto"),
+                ], width=3),
                 dbc.Col([
                     dbc.Card(
                         dbc.CardBody([
@@ -101,9 +95,9 @@ app_components = [
                                 config={"displayModeBar": False},
                                 style={"height": "100%", "width": "100%"},
                             )
-                        ], style={"height": "60vh", "width": "40vw"})
+                        ], style={"height": "60vh", "width": "100%"})
                     )
-                ], width="auto"),
+                ], width=5),
                 dbc.Col([
                     dbc.Card(
                         dbc.CardBody([
@@ -111,10 +105,10 @@ app_components = [
                                 id="globe",
                                 style={"height": "100%", "width": "100%"},
                             )
-                        ], style={"height": "60vh", "width": "32vw"})
+                        ], style={"height": "60vh", "width": "100%"})
                     )
-                ], width="auto"),
-            ], justify="left"),
-        ])
+                ], width=4),
+            ]),
+        ], style={"height": "100vh"}),
     )
 ]
