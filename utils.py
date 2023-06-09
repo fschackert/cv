@@ -22,7 +22,7 @@ def plot_skills(df, category, max_level=5):
 
     skills = go.Figure(
         layout={
-            'margin': {'r': 0, 't': 0, 'l': 0, 'b': 0, 'pad': 20},
+            'margin': {'r': 0, 't': 10, 'l': 0, 'b': 40},
             'plot_bgcolor': 'rgba(0, 0, 0, 0)',
             'paper_bgcolor': 'rgba(0, 0, 0, 0)',
             'font': {'size': 20},
@@ -68,12 +68,12 @@ def plot_skills(df, category, max_level=5):
             go.Scatter(
                 x=list(range(row['level'])),
                 y=[i] * row['level'],
-                mode='markers',
+                mode='markers+lines',
                 name=row['skill'],
                 marker_color=CATEGORY_COLORS[category],
                 marker_size=25,
                 marker_line_width=0,
-                # line_width=5,
+                line_width=5,
             )
         )
 
