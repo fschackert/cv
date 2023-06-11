@@ -16,7 +16,7 @@ def main() -> None:
 
     app = Dash(
         __name__,
-        external_stylesheets=[dbc.themes.QUARTZ, dbc.icons.FONT_AWESOME],
+        external_stylesheets=[dbc.themes.PULSE, dbc.icons.FONT_AWESOME],
     )
 
     app.layout = html.Div(

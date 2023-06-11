@@ -22,7 +22,7 @@ app_components = [
                                                 },
                                             ),
                                         ],
-                                        className="col-xs-12 col-md-2",
+                                        className="col-12 col-md-1",
                                         style={
                                             "height": "100%",
                                             "minHeight": "120px",
@@ -197,7 +197,7 @@ app_components = [
                                                         ),
                                                     ],
                                                     className="d-grid",
-                                                    color="light",
+                                                    color="dark",
                                                     direction="up",
                                                     label="Select category",
                                                     style={
