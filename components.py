@@ -15,8 +15,12 @@ app_components = [
                                 [
                                     dbc.Col(
                                         [
-                                            dbc.CardImg(
-                                                src="static/flo.png",
+                                            dcc.Graph(
+                                                id="profilePicture",
+                                                clear_on_unhover=True,
+                                                config={
+                                                    "displayModeBar": False,
+                                                },
                                                 style={
                                                     "height": "100%",
                                                 },
