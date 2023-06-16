@@ -1,8 +1,10 @@
 import pandas as pd
+
 import plotly.express as px
 import plotly.graph_objects as go
-import dash_bootstrap_components as dbc
+
 from dash import Dash, html, Input, Output, ctx
+import dash_bootstrap_components as dbc
 
 from components import app_components
 from utils import CATEGORY_COLORS, LINECOLOR, plot_skills
@@ -23,13 +25,18 @@ def main() -> None:
         children=app_components,
     )
 
-    df = pd.read_csv(
-        filepath_or_buffer='data.csv',
+    timeline_df = pd.read_csv(
+        filepath_or_buffer='timeline.csv',
         parse_dates=['start', 'end'],
     )
     skill_df = pd.read_csv(
         filepath_or_buffer='skills.csv',
     )
+    button_categories = {
+        'buttonProgramming': 'PROGRAMMING',
+        'buttonLanguages': 'LANGUAGES',
+        'buttonOthers': 'OTHER SKILLS',
+    }
 
     # ==================================================================
     # FIGURE CALLBACKS
@@ -66,8 +73,8 @@ def main() -> None:
                 'uirevision': 'static',
             },
         )
-        for category in df['category'].unique():
-            category_df = df[df['category'] == category]
+        for category in timeline_df['category'].unique():
+            category_df = timeline_df[timeline_df['category'] == category]
             timeline.add_trace(
                 go.Bar(
                     # dash does not seem to like timedelta, maybe related to github.com/plotly/dash/issues/1808
@@ -109,9 +116,9 @@ def main() -> None:
                     toggled_off_categories.append(figure_data['name'])
             except KeyError:
                 pass
-        toggled_on = df[~df['category'].isin(toggled_off_categories)]
+        toggled_on = timeline_df[~timeline_df['category'].isin(toggled_off_categories)]
         if toggled_on.empty:
-            toggled_on = df
+            toggled_on = timeline_df
             opacity = 0.0
             hovermode = False
         else:
@@ -168,11 +175,6 @@ def main() -> None:
         Input('buttonLanguages', 'n_clicks'),
         Input('buttonOthers', 'n_clicks'))
     def update_skills(*_):
-        button_categories = {
-            'buttonProgramming': 'PROGRAMMING',
-            'buttonLanguages': 'LANGUAGES',
-            'buttonOthers': 'OTHER SKILLS',
-        }
         try:
             category = button_categories[ctx.triggered_id]
         except KeyError:
@@ -185,12 +187,7 @@ def main() -> None:
         Input('buttonProgramming', 'n_clicks'),
         Input('buttonLanguages', 'n_clicks'),
         Input('buttonOthers', 'n_clicks'))
-    def update_skills(*_):
-        button_categories = {
-            'buttonProgramming': 'PROGRAMMING',
-            'buttonLanguages': 'LANGUAGES',
-            'buttonOthers': 'OTHER SKILLS',
-        }
+    def update_skill_title(*_):
         try:
             category = button_categories[ctx.triggered_id]
         except KeyError:
