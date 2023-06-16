@@ -153,65 +153,67 @@ app_components = [
                             dbc.Col(
                                 [
                                     dbc.Card(
-                                        dbc.CardBody(
-                                            [
-                                                html.Button(
-                                                    id="selectedCategory",
-                                                    style={
-                                                        "font-size": 20,
-                                                        "height": "10%",
-                                                        "white-space": "nowrap",
-                                                    },
-                                                ),
-                                                dcc.Graph(
-                                                    id="skills",
-                                                    config={
-                                                        "displayModeBar": False,
-                                                    },
-                                                    style={
-                                                        "height": "70%",
-                                                    },
-                                                ),
-                                                dbc.DropdownMenu(
-                                                    [
-                                                        dbc.DropdownMenuItem(
-                                                            "PROGRAMMING",
-                                                            id="buttonProgramming",
-                                                            style={
-                                                                "color": CATEGORY_COLORS["PROGRAMMING"],
-                                                            },
-                                                        ),
-                                                        dbc.DropdownMenuItem(
-                                                            "LANGUAGES",
-                                                            id="buttonLanguages",
-                                                            style={
-                                                                "color": CATEGORY_COLORS["LANGUAGES"],
-                                                            },
-                                                        ),
-                                                        dbc.DropdownMenuItem(
-                                                            "OTHER SKILLS",
-                                                            id="buttonOthers",
-                                                            style={
-                                                                "color": CATEGORY_COLORS["OTHER SKILLS"],
-                                                            },
-                                                        ),
-                                                    ],
-                                                    className="d-grid",
-                                                    color="dark",
-                                                    direction="up",
-                                                    label="Select category",
-                                                    style={
-                                                        "height": "20%",
-                                                    },
-                                                ),
-                                            ],
-                                            style={
-                                                "height": "60vh",
-                                                "width": "100%",
-                                                "minHeight": "400px",
-                                                "text-align": "center",
-                                            },
-                                        ),
+                                        [
+                                            dbc.CardBody(
+                                                [
+                                                    html.Button(
+                                                        id="selectedCategory",
+                                                        style={
+                                                            "font-size": 20,
+                                                            "height": "10%",
+                                                            "white-space": "nowrap",
+                                                        },
+                                                    ),
+                                                    dcc.Graph(
+                                                        id="skills",
+                                                        config={
+                                                            "displayModeBar": False,
+                                                        },
+                                                        style={
+                                                            "height": "70%",
+                                                        },
+                                                    ),
+                                                    dbc.DropdownMenu(
+                                                        [
+                                                            dbc.DropdownMenuItem(
+                                                                "PROGRAMMING",
+                                                                id="buttonProgramming",
+                                                                style={
+                                                                    "color": CATEGORY_COLORS["PROGRAMMING"],
+                                                                },
+                                                            ),
+                                                            dbc.DropdownMenuItem(
+                                                                "LANGUAGES",
+                                                                id="buttonLanguages",
+                                                                style={
+                                                                    "color": CATEGORY_COLORS["LANGUAGES"],
+                                                                },
+                                                            ),
+                                                            dbc.DropdownMenuItem(
+                                                                "OTHER SKILLS",
+                                                                id="buttonOthers",
+                                                                style={
+                                                                    "color": CATEGORY_COLORS["OTHER SKILLS"],
+                                                                },
+                                                            ),
+                                                        ],
+                                                        className="d-grid",
+                                                        color="dark",
+                                                        direction="up",
+                                                        label="Select category",
+                                                        style={
+                                                            "height": "20%",
+                                                        },
+                                                    ),
+                                                ],
+                                                style={
+                                                    "height": "60vh",
+                                                    "width": "100%",
+                                                    "minHeight": "400px",
+                                                    "text-align": "center",
+                                                },
+                                            ),
+                                        ],
                                     ),
                                 ],
                                 className="col-12 col-md-4",
@@ -219,25 +221,28 @@ app_components = [
                             dbc.Col(
                                 [
                                     dbc.Card(
-                                        dbc.CardBody(
-                                            [
-                                                dcc.Graph(
-                                                    id="timeline",
-                                                    clear_on_unhover=True,
-                                                    config={
-                                                        "displayModeBar": False,
-                                                    },
-                                                    style={
-                                                        "height": "100%",
-                                                        "width": "100%",
-                                                    },
-                                                ),
-                                            ], style={
-                                                "height": "60vh",
-                                                "width": "100%",
-                                                "minHeight": "400px",
-                                            },
-                                        ),
+                                        [
+                                            dbc.CardBody(
+                                                [
+                                                    dcc.Graph(
+                                                        id="timeline",
+                                                        clear_on_unhover=True,
+                                                        config={
+                                                            "displayModeBar": False,
+                                                        },
+                                                        style={
+                                                            "height": "100%",
+                                                            "width": "100%",
+                                                        },
+                                                    ),
+                                                ],
+                                                style={
+                                                    "height": "60vh",
+                                                    "width": "100%",
+                                                    "minHeight": "400px",
+                                                },
+                                            ),
+                                        ],
                                     ),
                                 ],
                                 className="col-12 col-md-4",
@@ -245,22 +250,24 @@ app_components = [
                             dbc.Col(
                                 [
                                     dbc.Card(
-                                        dbc.CardBody(
-                                            [
-                                                dcc.Graph(
-                                                    id="globe",
-                                                    style={
-                                                        "height": "100%",
-                                                        "width": "100%",
-                                                    },
-                                                ),
-                                            ],
-                                            style={
-                                                "height": "60vh",
-                                                "width": "100%",
-                                                "minHeight": "400px",
-                                            },
-                                        ),
+                                        [
+                                            dbc.CardBody(
+                                                [
+                                                    dcc.Graph(
+                                                        id="globe",
+                                                        style={
+                                                            "height": "100%",
+                                                            "width": "100%",
+                                                        },
+                                                    ),
+                                                ],
+                                                style={
+                                                    "height": "60vh",
+                                                    "width": "100%",
+                                                    "minHeight": "400px",
+                                                },
+                                            ),
+                                        ],
                                     ),
                                 ],
                                 className="col-12 col-md-4",
