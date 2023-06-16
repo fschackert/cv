@@ -57,10 +57,11 @@ def main() -> None:
         if not hover_data:
             fig = px.imshow(abstract_picture)
             fig.update_layout(
-                margin={'r': 0, 't': 0, 'l': 0, 'b': 0},
-                scene={
-                    "aspectmode": "data",
-                },
+                margin={'r': 0, 't': 0, 'l': 0, 'b': 0, 'pad': 0},
+                autosize=True,
+                #scene={
+                #    "aspectmode": "data",
+                #},
             )
             fig.update_xaxes(
                 showticklabels=False,
