@@ -1,13 +1,11 @@
-import numpy as np
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 import dash_bootstrap_components as dbc
 from dash import Dash, html, Input, Output, ctx
-from skimage import io
 
 from components import app_components
-from utils import CATEGORY_COLORS, LINECOLOR, plot_skills, gauss2d
+from utils import CATEGORY_COLORS, LINECOLOR, plot_skills
 
 
 def main() -> None:
@@ -33,61 +31,9 @@ def main() -> None:
         filepath_or_buffer='skills.csv',
     )
 
-    profile_picture = io.imread('static/profile_picture.jpeg')
-    len_x, len_y, _ = profile_picture.shape
-    x = np.linspace(0, len_x - 1, len_x)
-    y = np.linspace(0, len_y - 1, len_y)
-
-    abstract_picture = io.imread('static/abstract_picture.jpeg')
-    len_x, len_y, _ = profile_picture.shape
-    x = np.linspace(0, len_x - 1, len_x)
-    y = np.linspace(0, len_y - 1, len_y)
-
-    inverse = np.ones(len_y)[:, np.newaxis] * np.ones(len_x)
-
     # ==================================================================
     # FIGURE CALLBACKS
     # ==================================================================
-
-
-    @app.callback(
-        Output('profilePicture', 'figure'),
-        Input('profilePicture', 'hoverData'))
-    def update_profile(hover_data):
-        if not hover_data:
-            fig = px.imshow(abstract_picture)
-            fig.update_layout(
-                margin={'r': 0, 't': 0, 'l': 0, 'b': 0},
-                scene={
-                    "aspectmode": "data",
-                },
-            )
-            fig.update_xaxes(
-                showticklabels=False,
-            )
-            fig.update_yaxes(
-                showticklabels=False,
-            )
-            return fig
-        flashlight_width = 100
-        m_x, m_y = hover_data['points'][0]['x'], hover_data['points'][0]['y']
-        flashlight = gauss2d(x, y, m_x, m_y, flashlight_width)
-        updated_img = profile_picture * flashlight[..., np.newaxis]
-        updated_img += updated_img + abstract_picture * (inverse - flashlight)[..., np.newaxis]
-        fig = px.imshow(updated_img, contrast_rescaling='minmax')
-        fig.update_layout(
-            margin={'r': 0, 't': 0, 'l': 0, 'b': 0},
-            scene={
-                "aspectmode": "data",
-            },
-        )
-        fig.update_xaxes(
-            showticklabels=False,
-        )
-        fig.update_yaxes(
-            showticklabels=False,
-        )
-        return fig
 
     @app.callback(
         Output('timeline', 'figure'),

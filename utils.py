@@ -1,4 +1,3 @@
-import numpy as np
 import plotly.graph_objects as go
 
 CUSTOM_BLUE = '#2766E8'
@@ -79,13 +78,3 @@ def plot_skills(df, category, max_level=5):
         )
 
     return skills
-
-
-def gauss1d(x, m, s):
-    m = np.ones(len(x), dtype=float) * m
-    return np.exp2(-(x-m)**2/(2*s**2))
-
-
-def gauss2d(x, y, m_x, m_y, s):
-    return gauss1d(y, m_y, s)[:, np.newaxis] * gauss1d(x, m_x, s)
-
