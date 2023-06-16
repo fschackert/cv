@@ -16,13 +16,13 @@ app_components = [
                                     dbc.Col(
                                         [
                                             dbc.CardImg(
-                                                src="static/flo.png",
+                                                src="static/abstract.png",
                                                 style={
                                                     "height": "100%",
                                                 },
                                             ),
                                         ],
-                                        className="col-12 col-md-1",
+                                        className="col-12 col-sm-4 col-md-3 col-lg-2",
                                         style={
                                             "height": "100%",
                                             "minHeight": "120px",
@@ -214,6 +214,7 @@ app_components = [
                                         ),
                                     ),
                                 ],
+                                className="col-12 col-md-4",
                             ),
                             dbc.Col(
                                 [
@@ -239,6 +240,7 @@ app_components = [
                                         ),
                                     ),
                                 ],
+                                className="col-12 col-md-4",
                             ),
                             dbc.Col(
                                 [
@@ -261,6 +263,7 @@ app_components = [
                                         ),
                                     ),
                                 ],
+                                className="col-12 col-md-4",
                             ),
                         ],
                     ),
