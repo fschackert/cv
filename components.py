@@ -23,14 +23,12 @@ app_components = [
                                                 },
                                                 style={
                                                     "height": "100%",
-                                                    "width": "100%",
                                                 },
                                             ),
                                         ],
                                         className="col-12 col-md-1",
                                         style={
                                             "height": "100%",
-                                            "width": "20%",
                                             "minHeight": "120px",
                                             "minWidth": "120px",
                                         },
