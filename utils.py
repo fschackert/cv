@@ -47,7 +47,6 @@ def plot_skills(df, category, max_level=5):
                 'orientation': 'h',
                 'itemclick': False,
             },
-            #  'hovermode': False,
         },
     )
 
@@ -78,3 +77,24 @@ def plot_skills(df, category, max_level=5):
         )
 
     return skills
+
+
+def break_string(string, optimal_line_length=20):
+    lines = string.split('<br>')
+    out = []
+    for line in lines:
+        i = 0
+        tmp = ''
+        step = 1
+        for c in line:
+            if c == '<':
+                step = -1
+            if c == '>':
+                step = 1
+            i += step
+            tmp += c
+            if i >= optimal_line_length and c in [' ', '-']:
+                i = 0
+                tmp += '<br>'
+        out.append(tmp)
+    return '<br>'.join(out)

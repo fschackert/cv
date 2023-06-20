@@ -7,7 +7,7 @@ from dash import Dash, html, Input, Output, ctx
 import dash_bootstrap_components as dbc
 
 from components import app_components
-from utils import CATEGORY_COLORS, LINECOLOR, plot_skills
+from utils import CATEGORY_COLORS, LINECOLOR, plot_skills, break_string
 
 
 def main() -> None:
@@ -29,6 +29,20 @@ def main() -> None:
         filepath_or_buffer='timeline.csv',
         parse_dates=['start', 'end'],
     )
+    hovertemplates = {
+        'EDUCATION': "<b>%{text}</b><br>" +
+            "%{customdata[0]}<br><br>" +
+            "%{customdata[3]}" +
+            "<b>Grade</b>: %{customdata[2]}",
+        'WORK': "<b>%{text}</b><br>" +
+            "%{customdata[0]}<br>" +
+            "%{customdata[1]}<br>",
+        'MUSIC': "<b>%{text}</b><br>" +
+            "%{customdata[0]}<br><br>" +
+            "%{customdata[3]}" +
+            "<b>Grade</b>: %{customdata[2]}",
+    }
+
     skill_df = pd.read_csv(
         filepath_or_buffer='skills.csv',
     )
@@ -79,12 +93,21 @@ def main() -> None:
                 go.Bar(
                     # dash does not seem to like timedelta, maybe related to github.com/plotly/dash/issues/1808
                     x=(category_df['end'] - category_df['start']).dt.days*24*60*60*1000,
-                    y=category_df['title'],
+                    y=category_df['id'],
                     orientation='h',
                     base=category_df['start'],
                     marker_color=CATEGORY_COLORS[category],
                     marker_line_width=0,
                     name=category,
+                    text=category_df['title'],
+                    textposition='none',
+                    customdata=list(zip(
+                        category_df['institution'],
+                        category_df['location'],
+                        category_df['grade'],
+                        [break_string(description) for description in category_df['description']],
+                    )),
+                    hovertemplate=hovertemplates[category],
                 )
             )
         if hover_data:
@@ -163,7 +186,7 @@ def main() -> None:
             },
         )
         if hover_data is not None:
-            hovered_on = toggled_on[toggled_on['title'] == hover_data['points'][0]['label']]['title'].to_string(index=False)
+            hovered_on = toggled_on[toggled_on['id'] == hover_data['points'][0]['label']]['title'].to_string(index=False)
             for point in globe['data']:
                 if point['legendgroup'] == hovered_on:
                     point['marker']['opacity'] = 1.0
