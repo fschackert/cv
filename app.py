@@ -34,10 +34,25 @@ def main() -> None:
     skill_df = pd.read_csv(
         filepath_or_buffer='skills.csv',
     )
+
     button_categories = {
         'buttonProgramming': 'PROGRAMMING',
         'buttonLanguages': 'LANGUAGES',
         'buttonOthers': 'OTHER SKILLS',
+    }
+
+    hovertemplates = {
+        'EDUCATION': "<b>%{text}</b><br>" +
+            "%{customdata[0]}<br><br>" +
+            "%{customdata[1]}" +
+            "<b>Grade</b>: %{customdata[2]}",
+        'WORK': "<b>%{text}</b><br>" +
+            "%{customdata[0]}<br><br>" +
+            "%{customdata[1]}",
+        'MUSIC': "<b>%{text}</b><br>" +
+            "%{customdata[0]}<br><br>" +
+            "%{customdata[1]}" +
+            "<b>Grade</b>: %{customdata[2]}",
     }
 
     # ==================================================================
@@ -54,7 +69,7 @@ def main() -> None:
                 'bargap': 0.1,
                 'xaxis': {
                     'type': 'date',
-                    'range': ['2014-05-01', '2023-06-01'],
+                    'range': ['2014-05-01', '2023-06-30'],
                     'color': LINECOLOR,
                     'gridcolor': LINECOLOR,
                 },
@@ -77,19 +92,6 @@ def main() -> None:
         )
         for category in timeline_df['category'].unique():
             category_df = timeline_df[timeline_df['category'] == category]
-            hovertemplates = {
-                'EDUCATION': "<b>%{text}</b><br>" +
-                             "%{customdata[0]}<br><br>" +
-                             "%{customdata[1]}" +
-                             "<b>Grade</b>: %{customdata[2]}",
-                'WORK': "<b>%{text}</b><br>" +
-                        "%{customdata[0]}<br><br>" +
-                        "%{customdata[1]}",
-                'MUSIC': "<b>%{text}</b><br>" +
-                         "%{customdata[0]}<br><br>" +
-                         "%{customdata[1]}" +
-                         "<b>Grade</b>: %{customdata[2]}",
-            }
             timeline.add_trace(
                 go.Bar(
                     # dash does not seem to like timedelta, maybe related to github.com/plotly/dash/issues/1808
@@ -155,7 +157,7 @@ def main() -> None:
             data_frame=toggled_on,
             lat='lat',
             lon='lon',
-            color='title',
+            color=[str(i) for i in toggled_on['id']],  # Numerical values trigger continuous colors
             color_discrete_sequence=[CATEGORY_COLORS[category] for category in toggled_on['category']],
             hover_name='location',
             opacity=opacity,
@@ -190,10 +192,12 @@ def main() -> None:
             },
         )
         if hover_data is not None:
-            hovered_on = toggled_on[toggled_on['id'] == hover_data['points'][0]['label']]['title'].to_string(index=False)
-            for point in globe['data']:
+            hovered_on = toggled_on[toggled_on['id'] == hover_data['points'][0]['label']]['id'].to_string(index=False)
+            for i, point in enumerate(globe.data):
                 if point['legendgroup'] == hovered_on:
                     point['marker']['opacity'] = 1.0
+                    globe.data = globe.data[:i] + globe.data[i+1:] + (point, )  # See plotly feature request #2345
+                    break
         return globe
 
     @app.callback(
