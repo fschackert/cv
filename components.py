@@ -160,7 +160,7 @@ app_components = [
                                                         id="selectedCategory",
                                                         style={
                                                             "font-size": 20,
-                                                            "height": "10%",
+                                                            "height": "20%",
                                                             "white-space": "nowrap",
                                                         },
                                                     ),
@@ -170,7 +170,7 @@ app_components = [
                                                             "displayModeBar": False,
                                                         },
                                                         style={
-                                                            "height": "70%",
+                                                            "height": "80%",
                                                         },
                                                     ),
                                                     dbc.DropdownMenu(
@@ -202,7 +202,7 @@ app_components = [
                                                         direction="up",
                                                         label="Select category",
                                                         style={
-                                                            "height": "20%",
+                                                            "height": "10%",
                                                         },
                                                     ),
                                                 ],
@@ -216,7 +216,7 @@ app_components = [
                                         ],
                                     ),
                                 ],
-                                className="col-12 col-md-4",
+                                className="col-12 col-lg-4",
                             ),
                             dbc.Col(
                                 [
@@ -245,7 +245,7 @@ app_components = [
                                         ],
                                     ),
                                 ],
-                                className="col-12 col-md-4",
+                                className="col-12 col-md-8 col-lg-4",
                             ),
                             dbc.Col(
                                 [
@@ -270,7 +270,7 @@ app_components = [
                                         ],
                                     ),
                                 ],
-                                className="col-12 col-md-4",
+                                className="col-12 col-md-4 col-md-4",
                             ),
                         ],
                     ),

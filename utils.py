@@ -79,7 +79,7 @@ def plot_skills(df, category, max_level=5):
     return skills
 
 
-def break_string(string, optimal_line_length=20):
+def wrap_string(string, optimal_line_length=25):
     lines = string.split('<br>')
     out = []
     for line in lines:

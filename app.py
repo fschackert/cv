@@ -7,7 +7,7 @@ from dash import Dash, html, Input, Output, ctx
 import dash_bootstrap_components as dbc
 
 from components import app_components
-from utils import CATEGORY_COLORS, LINECOLOR, plot_skills, break_string
+from utils import CATEGORY_COLORS, LINECOLOR, plot_skills, wrap_string
 
 
 def main() -> None:
@@ -26,22 +26,10 @@ def main() -> None:
     )
 
     timeline_df = pd.read_csv(
+        delimiter=';',
         filepath_or_buffer='timeline.csv',
         parse_dates=['start', 'end'],
     )
-    hovertemplates = {
-        'EDUCATION': "<b>%{text}</b><br>" +
-            "%{customdata[0]}<br><br>" +
-            "%{customdata[3]}" +
-            "<b>Grade</b>: %{customdata[2]}",
-        'WORK': "<b>%{text}</b><br>" +
-            "%{customdata[0]}<br>" +
-            "%{customdata[1]}<br>",
-        'MUSIC': "<b>%{text}</b><br>" +
-            "%{customdata[0]}<br><br>" +
-            "%{customdata[3]}" +
-            "<b>Grade</b>: %{customdata[2]}",
-    }
 
     skill_df = pd.read_csv(
         filepath_or_buffer='skills.csv',
@@ -89,6 +77,19 @@ def main() -> None:
         )
         for category in timeline_df['category'].unique():
             category_df = timeline_df[timeline_df['category'] == category]
+            hovertemplates = {
+                'EDUCATION': "<b>%{text}</b><br>" +
+                             "%{customdata[0]}<br><br>" +
+                             "%{customdata[1]}" +
+                             "<b>Grade</b>: %{customdata[2]}",
+                'WORK': "<b>%{text}</b><br>" +
+                        "%{customdata[0]}<br><br>" +
+                        "%{customdata[1]}",
+                'MUSIC': "<b>%{text}</b><br>" +
+                         "%{customdata[0]}<br><br>" +
+                         "%{customdata[1]}" +
+                         "<b>Grade</b>: %{customdata[2]}",
+            }
             timeline.add_trace(
                 go.Bar(
                     # dash does not seem to like timedelta, maybe related to github.com/plotly/dash/issues/1808
@@ -103,11 +104,14 @@ def main() -> None:
                     textposition='none',
                     customdata=list(zip(
                         category_df['institution'],
-                        category_df['location'],
+                        [wrap_string(description) for description in category_df['description']],
                         category_df['grade'],
-                        [break_string(description) for description in category_df['description']],
                     )),
                     hovertemplate=hovertemplates[category],
+                    hoverlabel={
+                        "bgcolor": "white",
+                        "font_size": 16,
+                    }
                 )
             )
         if hover_data:
