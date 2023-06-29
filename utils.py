@@ -16,6 +16,13 @@ CATEGORY_COLORS = {
     'OTHER SKILLS': CUSTOM_GREY,
 }
 
+GLOBE_HOVER = "<b>%{hovertext}</b><br>%{customdata[0]}<br><br><b>Start: </b>%{customdata[1]}<br><b>End</b>: %{customdata[2]} <extra>%{customdata[3]}</extra>"
+
+TIMELINE_HOVER = {
+    'EDUCATION': "<b>%{text}</b><br>%{customdata[0]}<br><br>%{customdata[1]}<b>Grade</b>: %{customdata[2]}",
+    'MUSIC':     "<b>%{text}</b><br>%{customdata[0]}<br><br>%{customdata[1]}<b>Grade</b>: %{customdata[2]}",
+    'WORK':      "<b>%{text}</b><br>%{customdata[0]}<br><br>%{customdata[1]}",
+}
 
 def plot_skills(df, category, max_level=5):
     category_df = df[df['category'] == category].reset_index()

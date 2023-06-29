@@ -7,7 +7,7 @@ from dash import Dash, html, Input, Output, ctx
 import dash_bootstrap_components as dbc
 
 from components import app_components
-from utils import CATEGORY_COLORS, LINECOLOR, plot_skills, wrap_string
+from utils import CATEGORY_COLORS, LINECOLOR, GLOBE_HOVER, TIMELINE_HOVER, plot_skills, wrap_string
 
 
 def main() -> None:
@@ -39,20 +39,6 @@ def main() -> None:
         'buttonProgramming': 'PROGRAMMING',
         'buttonLanguages': 'LANGUAGES',
         'buttonOthers': 'OTHER SKILLS',
-    }
-
-    hovertemplates = {
-        'EDUCATION': "<b>%{text}</b><br>" +
-            "%{customdata[0]}<br><br>" +
-            "%{customdata[1]}" +
-            "<b>Grade</b>: %{customdata[2]}",
-        'WORK': "<b>%{text}</b><br>" +
-            "%{customdata[0]}<br><br>" +
-            "%{customdata[1]}",
-        'MUSIC': "<b>%{text}</b><br>" +
-            "%{customdata[0]}<br><br>" +
-            "%{customdata[1]}" +
-            "<b>Grade</b>: %{customdata[2]}",
     }
 
     # ==================================================================
@@ -109,7 +95,7 @@ def main() -> None:
                         [wrap_string(description) for description in category_df['description']],
                         category_df['grade'],
                     )),
-                    hovertemplate=hovertemplates[category],
+                    hovertemplate=TIMELINE_HOVER[category],
                     hoverlabel={
                         "bgcolor": "white",
                         "font_size": 16,
@@ -125,7 +111,7 @@ def main() -> None:
                     for j in range(len(timeline['data'][i]['x']))
                 ]
         else:
-            # timeline.update_traces(opacity=0.6) also changes the label colors
+            # timeline.update_traces(opacity=0.6) would also change the label colors
             for i in range(len(timeline['data'])):
                 timeline['data'][i]['marker']['opacity'] = [
                     0.6 for _ in range(len(timeline['data'][i]['x']))
@@ -153,15 +139,18 @@ def main() -> None:
         else:
             opacity = 0.6
             hovermode = 'closest'
+        toggled_on['start_yyyy_mm_dd'] = toggled_on['start'].dt.date
+        toggled_on['end_yyyy_mm_dd'] = toggled_on['end'].dt.date
         globe = px.scatter_geo(
             data_frame=toggled_on,
             lat='lat',
             lon='lon',
             color=[str(i) for i in toggled_on['id']],  # Numerical values trigger continuous colors
             color_discrete_sequence=[CATEGORY_COLORS[category] for category in toggled_on['category']],
-            hover_name='location',
+            hover_name='title',
             opacity=opacity,
             size=(toggled_on['end'] - toggled_on['start']).astype(int),
+            custom_data=['institution', 'start_yyyy_mm_dd', 'end_yyyy_mm_dd', 'category'],
         )
         globe.update_geos(
             projection_type='mercator',
@@ -190,7 +179,13 @@ def main() -> None:
             marker={
                 'line': {'width': 0},
             },
+            hoverlabel={
+                "bgcolor": "white",
+                "font_size": 16,
+            }
         )
+        for point in globe['data']:
+            point.hovertemplate = GLOBE_HOVER
         if hover_data is not None:
             hovered_on = toggled_on[toggled_on['id'] == hover_data['points'][0]['label']]['id'].to_string(index=False)
             for i, point in enumerate(globe.data):
