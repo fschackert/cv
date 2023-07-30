@@ -1,28 +1,7 @@
 import plotly.graph_objects as go
 
-CUSTOM_BLUE = '#2766E8'
-CUSTOM_GREY = '#212529'
-CUSTOM_RED = '#E83283'
-CUSTOM_YELLOW = '#E8B84A'
+from customcolors import CATEGORY_COLORS
 
-LINECOLOR = 'rgba(33, 37, 41, 1)'
-
-CATEGORY_COLORS = {
-    'MUSIC': CUSTOM_YELLOW,
-    'EDUCATION': CUSTOM_BLUE,
-    'WORK': CUSTOM_RED,
-    'PROGRAMMING': CUSTOM_BLUE,
-    'LANGUAGES': CUSTOM_RED,
-    'OTHER SKILLS': CUSTOM_GREY,
-}
-
-GLOBE_HOVER = "<b>%{hovertext}</b><br>%{customdata[0]}<br><br><b>Start: </b>%{customdata[1]}<br><b>End</b>: %{customdata[2]} <extra>%{customdata[3]}</extra>"
-
-TIMELINE_HOVER = {
-    'EDUCATION': "<b>%{text}</b><br>%{customdata[0]}<br><br>%{customdata[1]}<b>Grade</b>: %{customdata[2]}",
-    'MUSIC':     "<b>%{text}</b><br>%{customdata[0]}<br><br>%{customdata[1]}<b>Grade</b>: %{customdata[2]}",
-    'WORK':      "<b>%{text}</b><br>%{customdata[0]}<br><br>%{customdata[1]}",
-}
 
 def plot_skills(df, category, max_level=5):
     category_df = df[df['category'] == category].reset_index()
@@ -68,6 +47,7 @@ def plot_skills(df, category, max_level=5):
                 marker_color=CATEGORY_COLORS[category],
                 marker_size=25,
                 marker_line_width=0,
+                hoverinfo='skip',
             )
         )
         skills.add_trace(
@@ -80,28 +60,13 @@ def plot_skills(df, category, max_level=5):
                 marker_size=25,
                 marker_line_width=0,
                 line_width=5,
+                hoverlabel={
+                    "bgcolor": "white",
+                    "font_size": 16,
+                },
+                hoverinfo='text',
+                hovertext=row['description'],
             )
         )
 
     return skills
-
-
-def wrap_string(string, optimal_line_length=25):
-    lines = string.split('<br>')
-    out = []
-    for line in lines:
-        i = 0
-        tmp = ''
-        step = 1
-        for c in line:
-            if c == '<':
-                step = -1
-            if c == '>':
-                step = 1
-            i += step
-            tmp += c
-            if i >= optimal_line_length and c in [' ', '-']:
-                i = 0
-                tmp += '<br>'
-        out.append(tmp)
-    return '<br>'.join(out)
