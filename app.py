@@ -7,8 +7,8 @@ from dash import Dash, html, Input, Output, ctx
 import dash_bootstrap_components as dbc
 
 from components import app_components
-from utils import CATEGORY_COLORS, LINECOLOR, GLOBE_HOVER, TIMELINE_HOVER, plot_skills, wrap_string
-
+from customcolors import CATEGORY_COLORS, LINECOLOR
+from hovertemplates import *
 
 def main() -> None:
 
@@ -30,10 +30,15 @@ def main() -> None:
         filepath_or_buffer='timeline.csv',
         parse_dates=['start', 'end'],
     )
+    timeline_df['start_yyyy-mm-dd'] = timeline_df['start'].dt.date
+    timeline_df['end_yyyy-mm-dd'] = timeline_df['end'].dt.date
+    timeline_df.replace('n.a.', '', inplace=True)  # No empty sting in this markdown
 
     skill_df = pd.read_csv(
+        delimiter=';',
         filepath_or_buffer='skills.csv',
     )
+    max_skill_level = 5
 
     button_categories = {
         'buttonProgramming': 'PROGRAMMING',
@@ -92,7 +97,7 @@ def main() -> None:
                     textposition='none',
                     customdata=list(zip(
                         category_df['institution'],
-                        [wrap_string(description) for description in category_df['description']],
+                        category_df['description'],
                         category_df['grade'],
                     )),
                     hovertemplate=TIMELINE_HOVER[category],
@@ -139,8 +144,6 @@ def main() -> None:
         else:
             opacity = 0.6
             hovermode = 'closest'
-        toggled_on['start_yyyy_mm_dd'] = toggled_on['start'].dt.date
-        toggled_on['end_yyyy_mm_dd'] = toggled_on['end'].dt.date
         globe = px.scatter_geo(
             data_frame=toggled_on,
             lat='lat',
@@ -150,7 +153,7 @@ def main() -> None:
             hover_name='title',
             opacity=opacity,
             size=(toggled_on['end'] - toggled_on['start']).astype(int),
-            custom_data=['institution', 'start_yyyy_mm_dd', 'end_yyyy_mm_dd', 'category'],
+            custom_data=['institution', 'start_yyyy-mm-dd', 'end_yyyy-mm-dd', 'category'],
         )
         globe.update_geos(
             projection_type='mercator',
@@ -205,7 +208,71 @@ def main() -> None:
             category = button_categories[ctx.triggered_id]
         except KeyError:
             category = 'PROGRAMMING'
-        return plot_skills(skill_df, category)
+
+        category_df = skill_df[skill_df['category'] == category].reset_index()
+        skills = go.Figure(
+            layout={
+                'margin': {'r': 0, 't': 10, 'l': 0, 'b': 40},
+                'plot_bgcolor': 'rgba(0, 0, 0, 0)',
+                'paper_bgcolor': 'rgba(0, 0, 0, 0)',
+                'font': {'size': 20},
+                'xaxis': {
+                    'visible': False,
+                    'fixedrange': True,
+                },
+                'yaxis': {
+                    'showgrid': False,
+                    'zeroline': False,
+                    'tickmode': 'array',
+                    'ticktext': category_df['skill'],
+                    'tickvals': category_df.index.tolist(),
+                    'fixedrange': True,
+                },
+                'showlegend': False,
+                'legend': {
+                    'yanchor': 'bottom',
+                    'y': 1.05,
+                    'xanchor': 'center',
+                    'x': 0.0,
+                    'orientation': 'h',
+                    'itemclick': False,
+                },
+            },
+        )
+
+        for i, row in category_df.iterrows():
+            skills.add_trace(
+                go.Scatter(
+                    x=list(range(max_skill_level)),
+                    y=[i] * max_skill_level,
+                    mode='markers',
+                    opacity=0.3,
+                    name=row['skill'],
+                    marker_color=CATEGORY_COLORS[category],
+                    marker_size=25,
+                    marker_line_width=0,
+                    hoverinfo='skip',
+                )
+            )
+            skills.add_trace(
+                go.Scatter(
+                    x=list(range(row['level'])),
+                    y=[i] * row['level'],
+                    mode='markers+lines',
+                    name=row['skill'],
+                    marker_color=CATEGORY_COLORS[category],
+                    marker_size=25,
+                    marker_line_width=0,
+                    line_width=5,
+                    hoverlabel={
+                        "bgcolor": "white",
+                        "font_size": 16,
+                    },
+                    hoverinfo='text',
+                    hovertext=row['description'],
+                )
+            )
+        return skills
 
     @app.callback(
         Output('selectedCategory', 'children'),

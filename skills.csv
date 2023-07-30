@@ -1,13 +1,13 @@
-skill,level,category
-Java,2,PROGRAMMING
-Python,4,PROGRAMMING
-C++,1,PROGRAMMING
-Bash,3,PROGRAMMING
-Italian,2,LANGUAGES
-German,5,LANGUAGES
-French,1,LANGUAGES
-English,4,LANGUAGES
-LaTex,4,OTHER SKILLS
-Guitar,3,OTHER SKILLS
-Git,3,OTHER SKILLS
-Adobe CC,3,OTHER SKILLS
+skill;level;description;category
+Java;2;Software architecture course at TU Dresden;PROGRAMMING
+Python;4;Daily driver;PROGRAMMING
+C++;1; ;PROGRAMMING
+Bash;3; ;PROGRAMMING
+Italian;2; ;LANGUAGES
+German;5;Mother tongue;LANGUAGES
+French;1;Basic knowledge;LANGUAGES
+English;4;Fluent;LANGUAGES
+LaTex;4;PhD Thesis;OTHER SKILLS
+Guitar;3;Playing classical guitar since I am eight years old, studied one semester at HfMT Cologne, anyway... here's wonderwall;OTHER SKILLS
+Git;4; ;OTHER SKILLS
+Adobe CC;2; ;OTHER SKILLS

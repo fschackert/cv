@@ -46,30 +46,47 @@ app_components = [
                                                             "white-space": "nowrap",
                                                         },
                                                     ),
-                                                    html.H4(
-                                                        className="fa-solid fa-star-of-life",
+                                                    # html.Br(),  # Adds more space after name, optional
+                                                    html.P(
+                                                        [
+                                                            html.H4(
+                                                                className="fa-solid fa-star-of-life",
+                                                                style={
+                                                                    "margin-right": "10px",
+                                                                },
+                                                            ),
+                                                            html.H3(
+                                                                "1996",
+                                                                style={
+                                                                    "display": "inline",
+                                                                    "margin-right": "30px",
+                                                                    "white-space": "nowrap",
+                                                                },
+                                                            ),
+                                                        ],
                                                         style={
-                                                            "margin-right": "10px",
-                                                        },
-                                                    ),
-                                                    html.H3(
-                                                        "1996",
-                                                        style={
-                                                            "display": "inline",
-                                                            "margin-right": "30px",
+                                                            "display": "inline-block",
                                                             "white-space": "nowrap",
                                                         },
                                                     ),
-                                                    html.H4(
-                                                        className="fa-solid fa-location-dot",
+                                                    html.P(
+                                                        [
+                                                            html.H4(
+                                                                className="fa-solid fa-location-dot",
+                                                                style={
+                                                                    "margin-right": "10px",
+                                                                },
+                                                            ),
+                                                            html.H3(
+                                                                "Aachen",
+                                                                style={
+                                                                    "display": "inline",
+                                                                    "white-space": "nowrap",
+                                                                },
+                                                            ),
+                                                        ],
                                                         style={
-                                                            "margin-right": "10px",
-                                                        },
-                                                    ),
-                                                    html.H3(
-                                                        "Ulm",
-                                                        style={
-                                                            "display": "inline",
+                                                            "display": "inline-block",
                                                             "white-space": "nowrap",
                                                         },
                                                     ),
@@ -112,7 +129,7 @@ app_components = [
                                                                 },
                                                             ),
                                                         ],
-                                                        href="https://orcid.org/0000-0001-6028-3717",  # TODO
+                                                        href="https://github.com/fschackert",
                                                     ),
                                                     dcc.Link(
                                                         [
@@ -127,7 +144,7 @@ app_components = [
                                                                 },
                                                             ),
                                                         ],
-                                                        href="https://orcid.org/0000-0001-6028-3717",  # TODO
+                                                        href="https://www.linkedin.com/in/florianschackert",
                                                     ),
                                                 ],
                                             ),
