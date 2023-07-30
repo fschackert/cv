@@ -2,7 +2,7 @@ from dash import dcc
 from dash import html
 import dash_bootstrap_components as dbc
 
-from utils import CATEGORY_COLORS
+from customcolors import CATEGORY_COLORS
 
 app_components = [
     dbc.Card(
