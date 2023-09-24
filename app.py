@@ -10,41 +10,38 @@ from components import app_components
 from customcolors import CATEGORY_COLORS, LINECOLOR
 from hovertemplates import *
 
+
 def main() -> None:
 
     # ==================================================================
     # GLOBAL THINGIES
     # ==================================================================
 
-    app = Dash(
-        __name__,
-        external_stylesheets=[dbc.themes.PULSE, dbc.icons.FONT_AWESOME],
-    )
+    # Initialize Dash app
+    app = Dash(__name__, external_stylesheets=[dbc.themes.PULSE, dbc.icons.FONT_AWESOME])
+    app.layout = html.Div(children=app_components)
 
-    app.layout = html.Div(
-        children=app_components,
-    )
-
+    # Load and format CV data
     timeline_df = pd.read_csv(
         delimiter=';',
         filepath_or_buffer='timeline.csv',
         parse_dates=['start', 'end'],
     )
+    timeline_df.replace('n.a.', '', inplace=True)  # No empty string in this markdown
     timeline_df['start_yyyy-mm-dd'] = timeline_df['start'].dt.date
     timeline_df['end_yyyy-mm-dd'] = timeline_df['end'].dt.date
-    timeline_df.replace('n.a.', '', inplace=True)  # No empty sting in this markdown
 
+    # Skill plot related objects
     skill_df = pd.read_csv(
         delimiter=';',
         filepath_or_buffer='skills.csv',
     )
-    max_skill_level = 5
-
     button_categories = {
         'buttonProgramming': 'PROGRAMMING',
         'buttonLanguages': 'LANGUAGES',
         'buttonOthers': 'OTHER SKILLS',
     }
+    max_skill_level = 5
 
     # ==================================================================
     # FIGURE CALLBACKS
@@ -54,6 +51,7 @@ def main() -> None:
         Output('timeline', 'figure'),
         Input('timeline', 'hoverData'))
     def update_timeline(hover_data):
+        # Initialize figure with matching layout
         timeline = go.Figure(
             layout={
                 'margin': {'r': 0, 't': 0, 'l': 0, 'b': 0},
@@ -81,6 +79,8 @@ def main() -> None:
                 'uirevision': 'static',
             },
         )
+
+        # Each category gets its own trace
         for category in timeline_df['category'].unique():
             category_df = timeline_df[timeline_df['category'] == category]
             timeline.add_trace(
@@ -107,6 +107,8 @@ def main() -> None:
                     }
                 )
             )
+
+        # Highlight bar on hover
         if hover_data:
             curve_number = hover_data['points'][0]['curveNumber']
             point_number = hover_data['points'][0]['pointNumber']
@@ -121,6 +123,7 @@ def main() -> None:
                 timeline['data'][i]['marker']['opacity'] = [
                     0.6 for _ in range(len(timeline['data'][i]['x']))
                 ]
+
         return timeline
 
     @app.callback(
@@ -129,6 +132,7 @@ def main() -> None:
         Input('timeline', 'figure'),
         Input('timeline', 'restyleData'))
     def update_globe(hover_data, figure, _):
+        # Update visibility of marker groups on the map based on timeline traces
         toggled_off_categories = []
         for figure_data in figure['data']:
             try:
@@ -137,6 +141,8 @@ def main() -> None:
             except KeyError:
                 pass
         toggled_on = timeline_df[~timeline_df['category'].isin(toggled_off_categories)]
+
+        # Still show the map even when all categories are toggled off
         if toggled_on.empty:
             toggled_on = timeline_df
             opacity = 0.0
@@ -144,6 +150,8 @@ def main() -> None:
         else:
             opacity = 0.6
             hovermode = 'closest'
+
+        # Plot the map
         globe = px.scatter_geo(
             data_frame=toggled_on,
             lat='lat',
@@ -155,12 +163,13 @@ def main() -> None:
             size=(toggled_on['end'] - toggled_on['start']).astype(int),
             custom_data=['institution', 'start_yyyy-mm-dd', 'end_yyyy-mm-dd', 'category'],
         )
+
+        # Make map look nice
         globe.update_geos(
             projection_type='mercator',
             center={'lat': 50.9413, 'lon': 6.9583},
             lataxis_range=[40, 65],
             lonaxis_range=[-10, 40],
-            showcoastlines=False,
             resolution=50,
             scope='europe',
             showcountries=True,
@@ -187,8 +196,12 @@ def main() -> None:
                 "font_size": 16,
             }
         )
+
+        # Set format for hover data
         for point in globe['data']:
             point.hovertemplate = GLOBE_HOVER
+
+        # Highlight map marker on timeline hover and bring to front
         if hover_data is not None:
             hovered_on = toggled_on[toggled_on['id'] == hover_data['points'][0]['label']]['id'].to_string(index=False)
             for i, point in enumerate(globe.data):
@@ -196,6 +209,7 @@ def main() -> None:
                     point['marker']['opacity'] = 1.0
                     globe.data = globe.data[:i] + globe.data[i+1:] + (point, )  # See plotly feature request #2345
                     break
+
         return globe
 
     @app.callback(
@@ -204,12 +218,16 @@ def main() -> None:
         Input('buttonLanguages', 'n_clicks'),
         Input('buttonOthers', 'n_clicks'))
     def update_skills(*_):
+        # Set default category
         try:
             category = button_categories[ctx.triggered_id]
         except KeyError:
             category = 'PROGRAMMING'
 
+        # Filter for selected category
         category_df = skill_df[skill_df['category'] == category].reset_index()
+
+        # Initialize figure with matching layout
         skills = go.Figure(
             layout={
                 'margin': {'r': 0, 't': 10, 'l': 0, 'b': 40},
@@ -240,7 +258,9 @@ def main() -> None:
             },
         )
 
+        # Build plot row by row
         for i, row in category_df.iterrows():
+            # Plot muted markers in the background
             skills.add_trace(
                 go.Scatter(
                     x=list(range(max_skill_level)),
@@ -254,6 +274,7 @@ def main() -> None:
                     hoverinfo='skip',
                 )
             )
+            # Plot actual skill level
             skills.add_trace(
                 go.Scatter(
                     x=list(range(row['level'])),
@@ -272,6 +293,7 @@ def main() -> None:
                     hovertext=row['description'],
                 )
             )
+
         return skills
 
     @app.callback(
@@ -284,7 +306,7 @@ def main() -> None:
         try:
             category = button_categories[ctx.triggered_id]
         except KeyError:
-            category = 'PROGRAMMING'
+            category = 'PROGRAMMING'  # Set default
         style = {
             'background-color': 'rgba(0, 0, 0, 0)',
             'border-color': 'rgba(0, 0, 0, 0)',
