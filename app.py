@@ -19,6 +19,7 @@ def main() -> None:
 
     # Initialize Dash app
     app = Dash(__name__, external_stylesheets=[dbc.themes.PULSE, dbc.icons.FONT_AWESOME])
+    server = app.server
     app.layout = html.Div(children=app_components)
 
     # Load and format CV data
