@@ -101,7 +101,7 @@ app_components = [
                                         [
                                             dbc.CardBody(
                                                 [
-                                                    dcc.Link(
+                                                    html.A(
                                                         [
                                                             dbc.CardImg(
                                                                 src="static/orcid.svg",
@@ -116,7 +116,7 @@ app_components = [
                                                         ],
                                                         href="https://orcid.org/0000-0001-6028-3717",
                                                     ),
-                                                    dcc.Link(
+                                                    html.A(
                                                         [
                                                             dbc.CardImg(
                                                                 src="static/github-mark.svg",
@@ -131,7 +131,7 @@ app_components = [
                                                         ],
                                                         href="https://github.com/fschackert",
                                                     ),
-                                                    dcc.Link(
+                                                    html.A(
                                                         [
                                                             dbc.CardImg(
                                                                 src="static/linkedin.png",
