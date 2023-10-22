@@ -11,5 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: git commit --allow-empty -m "Daily Deployment"
-      - run: git push
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          token: ${{ secrets.WORKFLOW_GIT_ACCESS_TOKEN }}
+      - name: Make an empty commit
+        run: git commit --allow-empty -m "Daily Deployment"
+      - name: Push empty commit
+        run: git push
