@@ -13,7 +13,5 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
-        with:
-          branch: main
       - run: git commit --allow-empty -m "Daily Deployment"
-      - run: git push origin main
+      - run: git push
