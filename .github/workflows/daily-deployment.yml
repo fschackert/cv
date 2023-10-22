@@ -11,10 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.head.ref }}
-          token: ${{ secrets.WORKFLOW_GIT_ACCESS_TOKEN }}
-      - name: Make an empty commit
-        run: git commit --allow-empty -m "Daily Deployment"
-      - name: Push empty commit
-        run: git push
+      - run: |
+          git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
+          git config --global user.email "username@users.noreply.github.com"
+          git commit --allow-empty -m "Daily Deployment"
+          git push
