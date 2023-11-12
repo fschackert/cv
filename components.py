@@ -4,7 +4,31 @@ import dash_bootstrap_components as dbc
 
 from customcolors import CATEGORY_COLORS
 
+modal = dbc.Modal(
+        [
+            dbc.ModalHeader(
+                dbc.ModalTitle("Hi, welcome!"),
+                close_button=False
+            ),
+            dbc.ModalBody(
+                "Thanks for checking out my CV. "
+                "Hover over the plots below for more information."
+            ),
+            dbc.ModalFooter(
+                dbc.Button(
+                    "Explore",
+                    id="close-dismiss"
+                ),
+            ),
+        ],
+        id="modal-dismiss",
+        is_open=True,
+        keyboard=False,
+        backdrop="static",
+)
+
 app_components = [
+    modal,
     dbc.Card(
         [
             dbc.CardBody(

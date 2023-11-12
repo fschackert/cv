@@ -17,7 +17,7 @@ from hovertemplates import *
 
 # Initialize Dash app
 app = Dash(__name__, external_stylesheets=[dbc.themes.PULSE, dbc.icons.FONT_AWESOME])
-server = app.server
+# server = app.server
 app.layout = html.Div(children=app_components)
 
 # Load and format CV data
@@ -42,25 +42,6 @@ button_categories = {
 }
 max_skill_level = 5
 
-modal = html.Div[
-    dbc.Modal(
-        [
-            dbc.ModalHeader(
-                dbc.ModalTitle("Instructions"),
-                close_button=False
-            ),
-            dbc.ModalBody(
-                "Hover over the plots "
-                "below for more information."
-            ),
-            dbc.ModalFooter(dbc.Button("Explore", id="close-dismiss")),
-        ],
-        id="modal-dismiss",
-        is_open=True,
-        keyboard=False,
-        backdrop="static",
-    ),
-]
 
 # ==================================================================
 # FIGURE CALLBACKS
@@ -70,8 +51,8 @@ modal = html.Div[
     Output("modal-dismiss", "is_open"),
     Input("close-dismiss", "n_clicks"),
     State("modal-dismiss", "is_open"))
-def dismiss_modal(n_open, n_close, is_open):
-    if n_open or n_close:
+def dismiss_modal(n_close, is_open):
+    if n_close:
         return not is_open
     return is_open
 
@@ -347,3 +328,6 @@ def update_skill_title(*_):
         'text-align': 'center',
     }
     return category, style
+
+
+app.run_server(debug=True)
