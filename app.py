@@ -17,7 +17,7 @@ from hovertemplates import *
 
 # Initialize Dash app
 app = Dash(__name__, external_stylesheets=[dbc.themes.PULSE, dbc.icons.FONT_AWESOME])
-# server = app.server
+server = app.server
 app.layout = html.Div(children=app_components)
 
 # Load and format CV data
@@ -328,6 +328,3 @@ def update_skill_title(*_):
         'text-align': 'center',
     }
     return category, style
-
-
-app.run_server(debug=True)
