@@ -3,7 +3,7 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 
-from dash import Dash, html, Input, Output, ctx
+from dash import Dash, html, Input, Output, State, ctx
 import dash_bootstrap_components as dbc
 
 from components import app_components
@@ -42,9 +42,39 @@ button_categories = {
 }
 max_skill_level = 5
 
+modal = html.Div[
+    dbc.Modal(
+        [
+            dbc.ModalHeader(
+                dbc.ModalTitle("Instructions"),
+                close_button=False
+            ),
+            dbc.ModalBody(
+                "Hover over the plots "
+                "below for more information."
+            ),
+            dbc.ModalFooter(dbc.Button("Explore", id="close-dismiss")),
+        ],
+        id="modal-dismiss",
+        is_open=True,
+        keyboard=False,
+        backdrop="static",
+    ),
+]
+
 # ==================================================================
 # FIGURE CALLBACKS
 # ==================================================================
+
+@app.callback(
+    Output("modal-dismiss", "is_open"),
+    Input("close-dismiss", "n_clicks"),
+    State("modal-dismiss", "is_open"))
+def dismiss_modal(n_open, n_close, is_open):
+    if n_open or n_close:
+        return not is_open
+    return is_open
+
 
 @app.callback(
     Output('timeline', 'figure'),
@@ -124,6 +154,7 @@ def update_timeline(hover_data):
             ]
 
     return timeline
+
 
 @app.callback(
     Output('globe', 'figure'),
@@ -211,6 +242,7 @@ def update_globe(hover_data, figure, _):
 
     return globe
 
+
 @app.callback(
     Output('skills', 'figure'),
     Input('buttonProgramming', 'n_clicks'),
@@ -294,6 +326,7 @@ def update_skills(*_):
         )
 
     return skills
+
 
 @app.callback(
     Output('selectedCategory', 'children'),
