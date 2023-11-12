@@ -1,8 +1,8 @@
 name: Daily Deployment
 
 on:
-  schedule:
-  - cron: "0 0 * * *"
+#  schedule:  # Does not trigger automated deploy on render
+#  - cron: "0 0 * * *"
   workflow_dispatch:
   
 jobs:
