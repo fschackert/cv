@@ -102,7 +102,7 @@ app_components = [
                                                                 },
                                                             ),
                                                             html.H3(
-                                                                "Aachen",
+                                                                "Berlin",
                                                                 style={
                                                                     "display": "inline",
                                                                     "white-space": "nowrap",
