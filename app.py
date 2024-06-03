@@ -68,7 +68,7 @@ def update_timeline(hover_data):
             'bargap': 0.1,
             'xaxis': {
                 'type': 'date',
-                'range': ['2014-05-01', '2024-04-30'],
+                'range': ['2014-05-01', '2024-05-31'],
                 'color': LINECOLOR,
                 'gridcolor': LINECOLOR,
             },
